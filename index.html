@@ -1,29 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soroush Etemad | Neural Interface</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soroush Etemad | Robotics Systems Engineer</title>
+    <!-- Favicon -->
+    <link rel="icon" href="images/profile.jpg" type="image/jpeg" />
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        
+
+        /* --------------------------- */
+        /*     GLOBAL / RESET STYLES   */
+        /* --------------------------- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
         body {
             font-family: 'Orbitron', monospace;
-            background: #000;
-            color: #fff;
+            background: #0a0a0a;
+            color: #e0e0e0;
             overflow-x: hidden;
             cursor: none;
             line-height: 1.6;
         }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        ul {
+            list-style: none;
+        }
 
-        /* Interactive Canvas Background */
-        #waveCanvas {
+        /* -------------------------------- */
+        /*   CANVAS FOR NEURAL BACKGROUND   */
+        /* -------------------------------- */
+        #neuralCanvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -31,86 +49,60 @@
             height: 100%;
             z-index: -1;
             pointer-events: none;
+            background: #0a0a0a;
         }
 
-        /* Fluid Background Waves */
-        .fluid-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, #001122 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, #112200 0%, transparent 50%),
-                        radial-gradient(circle at 40% 80%, #220011 0%, transparent 50%),
-                        linear-gradient(135deg, #000428, #004e92, #000831, #002b5c);
-            animation: fluidShift 15s ease-in-out infinite;
-            z-index: -2;
-        }
-
-        @keyframes fluidShift {
-            0%, 100% { 
-                filter: hue-rotate(0deg) brightness(1);
-                transform: scale(1) rotate(0deg);
-            }
-            25% { 
-                filter: hue-rotate(90deg) brightness(1.2);
-                transform: scale(1.1) rotate(2deg);
-            }
-            50% { 
-                filter: hue-rotate(180deg) brightness(0.8);
-                transform: scale(0.95) rotate(-1deg);
-            }
-            75% { 
-                filter: hue-rotate(270deg) brightness(1.1);
-                transform: scale(1.05) rotate(3deg);
-            }
-        }
-
-        /* Custom Cursor */
+        /* --------------------------- */
+        /*       CUSTOM CURSOR         */
+        /* --------------------------- */
         .cursor {
             position: fixed;
-            width: 30px;
-            height: 30px;
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.8), transparent);
+            width: 24px;
+            height: 24px;
+            background: rgba(30, 144, 255, 0.7);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             mix-blend-mode: screen;
             transition: transform 0.1s ease;
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            border: 1px solid rgba(30, 144, 255, 0.5);
         }
-
         .cursor::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 10px;
-            height: 10px;
-            background: #00ffff;
+            width: 8px;
+            height: 8px;
+            background: #1e90ff;
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            animation: cursorPulse 2s ease-in-out infinite;
+            animation: cursorPulse 1.8s ease-in-out infinite;
         }
-
         @keyframes cursorPulse {
-            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
+            0%, 100% {
+                opacity: 0.6;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.4);
+            }
         }
 
-        /* Navigation */
+        /* --------------------------- */
+        /*          NAVIGATION         */
+        /* --------------------------- */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 2rem;
+            padding: 1.5rem 2rem;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(30, 144, 255, 0.2);
         }
-
         nav .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -118,621 +110,403 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .logo {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 900;
-            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff88);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            animation: logoShift 3s ease-in-out infinite;
-            cursor: pointer;
-        }
-
-        @keyframes logoShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        nav a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-weight: 400;
+            color: #1e90ff;
             text-transform: uppercase;
             letter-spacing: 2px;
-            position: relative;
-            transition: all 0.3s ease;
-            font-size: 0.85rem;
             cursor: pointer;
         }
-
-        nav a::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            left: -8px;
-            right: -8px;
-            bottom: -8px;
-            background: linear-gradient(45deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
-            z-index: -1;
-            opacity: 0;
-            border-radius: 8px;
-            transition: opacity 0.3s ease;
-            filter: blur(5px);
+        nav ul {
+            display: flex;
+            gap: 1.5rem;
+        }
+        nav a.nav-link {
+            color: rgba(224, 224, 224, 0.85);
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        nav a.nav-link:hover,
+        nav a.nav-link.active {
+            color: #1e90ff;
         }
 
-        nav a:hover::before {
-            opacity: 1;
-        }
-
-        nav a:hover, nav a.active {
-            color: #00ffff;
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-        }
-
-        /* Page Container */
+        /* --------------------------- */
+        /*   PAGE CONTAINER & PAGES    */
+        /* --------------------------- */
         .page {
             display: none;
             min-height: 100vh;
-            padding-top: 100px;
+            padding-top: 80px;
         }
-
         .page.active {
             display: block;
         }
-
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
         }
 
-        /* Home Page - Hero Section */
+        /* --------------------------- */
+        /*       HERO SECTION          */
+        /* --------------------------- */
         .hero {
-            height: 100vh;
+            height: calc(100vh - 80px);
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             position: relative;
-            overflow: hidden;
-            margin-top: -100px;
-            padding-top: 100px;
         }
-
         .hero-content {
             z-index: 10;
-            position: relative;
         }
-
-        .profile-photo {
-            width: 140px;
-            height: 140px;
-            object-fit: cover;
+        .hero img {
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            border: 3px solid #00ffff;
-            box-shadow: 0 0 30px rgba(0,255,255,0.2);
-            margin-bottom: 2rem;
-            background: #001122;
+            box-shadow: 0 0 30px rgba(30, 144, 255, 0.3);
+            margin-bottom: 1.5rem;
+            object-fit: cover;
+            border: 2px solid #1e90ff;
         }
-
         .name-title {
-            font-size: 5.5rem;
+            font-size: 4rem;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: 1rem;
-            position: relative;
-            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff88, #ffaa00);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: nameGlow 4s ease-in-out infinite;
-        }
-
-        @keyframes nameGlow {
-            0%, 100% { 
-                background-position: 0% 50%;
-                filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.5));
-            }
-            25% { 
-                background-position: 100% 0%;
-                filter: drop-shadow(0 0 30px rgba(255, 0, 255, 0.7));
-            }
-            50% { 
-                background-position: 100% 100%;
-                filter: drop-shadow(0 0 25px rgba(0, 255, 136, 0.6));
-            }
-            75% { 
-                background-position: 0% 100%;
-                filter: drop-shadow(0 0 35px rgba(255, 170, 0, 0.8));
-            }
-        }
-
-        .subtitle {
-            font-size: 1.4rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 3rem;
             letter-spacing: 3px;
-            text-transform: uppercase;
-            position: relative;
+            color: #e0e0e0;
+            margin-bottom: 1rem;
         }
-
-        /* Neural Button */
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(224, 224, 224, 0.7);
+            margin-bottom: 2.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
         .neural-button {
             position: relative;
             display: inline-block;
-            padding: 1.2rem 3.5rem;
-            background: transparent;
-            border: 2px solid transparent;
-            background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), 
-                            linear-gradient(45deg, #00ffff, #ff00ff, #00ff88);
-            background-origin: border-box;
-            background-clip: content-box, border-box;
-            color: #00ffff;
-            text-decoration: none;
+            padding: 1rem 2.5rem;
+            background: #1e90ff;
+            color: #0a0a0a;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             font-weight: 700;
-            transition: all 0.4s ease;
-            overflow: hidden;
-            border-radius: 50px;
+            border: none;
+            border-radius: 40px;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
         }
-
-        .neural-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .neural-button:hover::before {
-            left: 100%;
-        }
-
         .neural-button:hover {
-            color: #000;
-            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff88);
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.6),
-                        0 0 100px rgba(255, 0, 255, 0.4);
-            transform: translateY(-5px);
+            background: #0f78d4;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.4);
+            transform: translateY(-4px);
         }
 
-        /* Content Pages */
-        .content-page {
-            padding: 4rem 0;
-        }
-
+        /* --------------------------- */
+        /*     SECTION HEADERS         */
+        /* --------------------------- */
         .page-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
         }
-
         .page-title {
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            background: linear-gradient(45deg, #00ffff, #ff00ff);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: titleGlow 3s ease-in-out infinite;
-            margin-bottom: 1rem;
-        }
-
-        @keyframes titleGlow {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .page-subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.6);
             letter-spacing: 2px;
+            color: #1e90ff;
+            margin-bottom: 0.5rem;
+        }
+        .page-subtitle {
+            font-size: 1rem;
+            color: rgba(224, 224, 224, 0.7);
+            letter-spacing: 1px;
         }
 
-        /* Content Grid */
+        /* --------------------------- */
+        /*      CONTENT CARDS          */
+        /* --------------------------- */
         .content-grid {
             display: grid;
-            gap: 3rem;
-            margin-bottom: 4rem;
+            gap: 2.5rem;
         }
-
         .content-card {
-            background: rgba(0, 255, 255, 0.05);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 2.5rem;
-            transition: all 0.3s ease;
+            background: #111;
+            border: 1px solid rgba(30, 144, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
         }
-
-        .content-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .content-card:hover::before {
-            left: 100%;
-        }
-
         .content-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
-            border-color: rgba(0, 255, 255, 0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(30, 144, 255, 0.2);
         }
-
         .card-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            color: #00ffff;
-            margin-bottom: 1rem;
+            color: #1e90ff;
+            margin-bottom: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
-
         .card-subtitle {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 1.5rem;
-            font-weight: 400;
+            font-size: 0.95rem;
+            color: rgba(224, 224, 224, 0.7);
+            margin-bottom: 1rem;
+            font-weight: 500;
         }
-
         .card-content {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(224, 224, 224, 0.85);
             line-height: 1.8;
         }
 
-        /* Skills Grid */
+        /* --------------------------- */
+        /*       SKILLS GRID           */
+        /* --------------------------- */
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
-            margin: 3rem 0;
+            margin-top: 2rem;
         }
-
         .skill-item {
             text-align: center;
-            padding: 2rem;
-            background: rgba(255, 0, 255, 0.05);
-            border: 1px solid rgba(255, 0, 255, 0.2);
+            padding: 1.5rem;
+            background: #111;
+            border: 1px solid rgba(30, 144, 255, 0.1);
             border-radius: 10px;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
-
         .skill-item:hover {
-            transform: scale(1.05);
-            background: rgba(255, 0, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(255, 0, 255, 0.3);
+            background: rgba(30, 144, 255, 0.1);
+            transform: translateY(-4px);
         }
-
         .skill-name {
             font-weight: 700;
-            color: #ff00ff;
+            color: #1e90ff;
             margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Projects Grid */
+        /* --------------------------- */
+        /*      PROJECTS GRID          */
+        /* --------------------------- */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
-
         .project-card {
-            background: rgba(0, 255, 136, 0.05);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 15px;
-            padding: 2.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            background: #111;
+            border: 1px solid rgba(30, 144, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
         .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(30, 144, 255, 0.2);
         }
-
         .project-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            color: #00ff88;
-            margin-bottom: 1rem;
+            color: #1e90ff;
+            margin-bottom: 0.7rem;
             text-transform: uppercase;
         }
-
         .project-tech {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin: 1rem 0;
+            margin-top: 0.8rem;
         }
-
         .tech-tag {
-            background: rgba(0, 255, 136, 0.2);
-            color: #00ff88;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            background: rgba(30, 144, 255, 0.1);
+            color: #1e90ff;
+            padding: 0.3rem 0.7rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
-        /* Publications */
+        /* --------------------------- */
+        /*        PUBLICATIONS         */
+        /* --------------------------- */
         .publication-item {
-            border-left: 3px solid #00ffff;
-            padding-left: 2rem;
-            margin-bottom: 2rem;
+            border-left: 3px solid #1e90ff;
+            padding-left: 1.8rem;
+            margin-bottom: 1.5rem;
         }
-
         .pub-title {
             font-weight: 700;
-            color: #00ffff;
-            margin-bottom: 0.5rem;
+            color: #1e90ff;
+            margin-bottom: 0.4rem;
         }
-
         .pub-authors {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(224, 224, 224, 0.7);
             font-style: italic;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
-
         .pub-venue {
-            color: #ff00ff;
-            font-weight: 600;
+            color: rgba(224, 224, 224, 0.85);
+            font-weight: 500;
         }
 
-        /* Blog Posts */
+        /* --------------------------- */
+        /*         BLOG POSTS          */
+        /* --------------------------- */
         .blog-post {
-            background: rgba(255, 170, 0, 0.05);
-            border: 1px solid rgba(255, 170, 0, 0.2);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
+            background: #111;
+            border: 1px solid rgba(30, 144, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
         .blog-post:hover {
-            transform: translateX(10px);
-            box-shadow: -5px 10px 30px rgba(255, 170, 0, 0.2);
+            transform: translateX(6px);
+            box-shadow: -8px 12px 25px rgba(30, 144, 255, 0.15);
         }
-
         .blog-title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            color: #ffaa00;
-            margin-bottom: 0.5rem;
+            color: #1e90ff;
+            margin-bottom: 0.4rem;
         }
-
         .blog-date {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+            color: rgba(224, 224, 224, 0.6);
+            font-size: 0.85rem;
+            margin-bottom: 0.7rem;
         }
-
         .blog-excerpt {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.8;
+            color: rgba(224, 224, 224, 0.85);
+            line-height: 1.7;
         }
 
-        /* Contact Form */
+        /* --------------------------- */
+        /*       CONTACT SECTION       */
+        /* --------------------------- */
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .contact-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: #111;
+            border: 1px solid rgba(30, 144, 255, 0.1);
+            border-radius: 10px;
+        }
+        .contact-label {
+            font-weight: 700;
+            color: #1e90ff;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
         .contact-form {
             max-width: 600px;
             margin: 0 auto;
         }
-
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: 1.8rem;
         }
-
         .form-group label {
             display: block;
-            color: #00ffff;
+            color: #1e90ff;
             margin-bottom: 0.5rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .form-group input,
         .form-group textarea {
             width: 100%;
-            background: rgba(0, 255, 255, 0.05);
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            background: #111;
+            border: 1px solid rgba(30, 144, 255, 0.2);
             border-radius: 8px;
             padding: 1rem;
-            color: #fff;
+            color: #e0e0e0;
             font-family: 'Orbitron', monospace;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #00ffff;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-            background: rgba(0, 255, 255, 0.1);
+            border-color: #1e90ff;
+            box-shadow: 0 0 12px rgba(30, 144, 255, 0.3);
+            background: #1a1a1a;
         }
-
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        .contact-item {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(0, 255, 255, 0.05);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            border-radius: 10px;
-        }
-
-        .contact-label {
+        .contact-form button {
+            padding: 1rem 2.2rem;
+            background: #1e90ff;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 40px;
             font-weight: 700;
-            color: #00ffff;
-            margin-bottom: 0.5rem;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .contact-form button:hover {
+            background: #0f78d4;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.4);
+            transform: translateY(-3px);
         }
 
-        /* Floating elements */
-        .floating-orb {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.3), transparent);
-            animation: floatingOrb 12s ease-in-out infinite;
-        }
-
-        @keyframes floatingOrb {
-            0%, 100% { 
-                transform: translateY(0px) rotate(0deg) scale(1);
-                opacity: 0.3;
-            }
-            25% { 
-                transform: translateY(-100px) rotate(90deg) scale(1.2);
-                opacity: 0.6;
-            }
-            50% { 
-                transform: translateY(-200px) rotate(180deg) scale(0.8);
-                opacity: 1;
-            }
-            75% { 
-                transform: translateY(-150px) rotate(270deg) scale(1.1);
-                opacity: 0.4;
-            }
-        }
-
-        /* Responsive */
+        /* --------------------------- */
+        /*         RESPONSIVE          */
+        /* --------------------------- */
         @media (max-width: 768px) {
-            .name-title {
-                font-size: 3rem;
+            .hero img {
+                width: 120px;
+                height: 120px;
             }
-            
-            .page-title {
+            .name-title {
                 font-size: 2.5rem;
             }
-            
+            .page-title {
+                font-size: 2rem;
+            }
             nav ul {
                 flex-wrap: wrap;
                 gap: 1rem;
             }
-            
             .neural-button {
-                padding: 1rem 2rem;
-                font-size: 0.9rem;
+                padding: 0.8rem 2rem;
+                font-size: 0.85rem;
             }
-
             .projects-grid {
                 grid-template-columns: 1fr;
             }
-
             .skills-grid {
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             }
         }
-
-        /* Loading Animation */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, #001122, #000000);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            transition: opacity 1.5s ease;
-        }
-
-        .loading-content {
-            text-align: center;
-        }
-
-        .loading-text {
-            font-size: 1.8rem;
-            color: #00ffff;
-            animation: loadingPulse 2s ease-in-out infinite;
-            margin-bottom: 2rem;
-        }
-
-        .loading-bar {
-            width: 300px;
-            height: 4px;
-            background: rgba(0, 255, 255, 0.2);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .loading-progress {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #00ffff, #ff00ff);
-            border-radius: 2px;
-            animation: loadingProgress 3s ease-out forwards;
-        }
-
-        @keyframes loadingPulse {
-            0%, 100% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-        }
-
-        @keyframes loadingProgress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading" id="loading">
-        <div class="loading-content">
-            <div class="loading-text">INITIALIZING SOROUSH.SYS</div>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Custom Cursor -->
+    <!-- CUSTOM CURSOR -->
     <div class="cursor" id="cursor"></div>
 
-    <!-- Interactive Canvas Background -->
-    <canvas id="waveCanvas"></canvas>
+    <!-- NEURAL NETWORK CANVAS BACKGROUND -->
+    <canvas id="neuralCanvas"></canvas>
 
-    <!-- Fluid Background -->
-    <div class="fluid-bg"></div>
-
-    <!-- Navigation -->
+    <!-- NAVIGATION -->
     <nav>
         <div class="container">
             <div class="logo" onclick="showPage('home')">S.ETEMAD</div>
@@ -752,44 +526,38 @@
     <div id="home" class="page active">
         <section class="hero">
             <div class="hero-content">
-                <img src="images/profile.jpg" alt="Soroush Etemad" class="profile-photo">
+                <img src="images/profile.jpg" alt="Soroush Etemad" />
                 <h1 class="name-title">SOROUSH ETEMAD</h1>
-                <p class="subtitle">Advanced Robotics Systems Engineer</p>
-                <button class="neural-button" onclick="showPage('about')">INITIALIZE PROTOCOL</button>
+                <p class="subtitle">Robotics Systems Engineer & Technologist</p>
+                <button class="neural-button" onclick="showPage('about')">ABOUT ME</button>
             </div>
-            
-            <!-- Floating Orbs -->
-            <div class="floating-orb" style="width: 80px; height: 80px; top: 15%; left: 10%; animation-delay: -2s;"></div>
-            <div class="floating-orb" style="width: 120px; height: 120px; top: 20%; right: 15%; animation-delay: -5s;"></div>
-            <div class="floating-orb" style="width: 60px; height: 60px; bottom: 25%; left: 20%; animation-delay: -8s;"></div>
-            <div class="floating-orb" style="width: 100px; height: 100px; bottom: 30%; right: 10%; animation-delay: -11s;"></div>
         </section>
     </div>
 
     <!-- ABOUT PAGE -->
     <div id="about" class="page">
         <div class="container content-page">
-            <img src="images/profile.jpg" alt="Soroush Etemad" class="profile-photo about-photo">
             <div class="page-header">
+                <img src="images/profile.jpg" alt="Soroush Etemad" style="width: 120px; height: 120px; border-radius: 50%; box-shadow: 0 0 20px rgba(30, 144, 255, 0.3); margin-bottom: 1rem; object-fit: cover; border: 2px solid #1e90ff;" />
                 <h1 class="page-title">ABOUT</h1>
-                <p class="page-subtitle">Neural Networks & Robotic Systems</p>
+                <p class="page-subtitle">Robotics, Systems Engineering & Technology</p>
             </div>
-            
+
             <div class="content-grid">
                 <div class="content-card">
                     <h3 class="card-title">Background</h3>
                     <div class="card-content">
-                        Advanced Robotics Systems Engineer specializing in neural interface development and autonomous systems. With over 8 years of experience in cutting-edge robotics research, I focus on bridging the gap between human cognition and machine intelligence through innovative neural-computational interfaces.
+                        Robotics Systems Engineer specializing in advanced technology and autonomous systems. With over 8 years of experience in cutting-edge robotics research, I focus on bridging the gap between human creativity and machine intelligence through innovative engineering solutions.
                     </div>
                 </div>
-                
+
                 <div class="content-card">
-                    <h3 class="card-title">Research Focus</h3>
+                    <h3 class="card-title">Professional Focus</h3>
                     <div class="card-content">
-                        My research centers on developing next-generation neural interfaces that enable seamless human-robot collaboration. I work extensively with brain-computer interfaces, machine learning algorithms, and real-time control systems to create intuitive robotic platforms.
+                        My work centers on developing next-generation robotics and intelligent systems that enable seamless human-machine collaboration. I work extensively with control systems, machine learning algorithms, and real-time platforms to create intuitive and robust robotic solutions.
                     </div>
                 </div>
-                
+
                 <div class="content-card">
                     <h3 class="card-title">Philosophy</h3>
                     <div class="card-content">
@@ -800,16 +568,16 @@
 
             <div class="skills-grid">
                 <div class="skill-item">
-                    <div class="skill-name">Neural Interfaces</div>
-                    <div>Brain-Computer Interfaces, EEG Processing</div>
+                    <div class="skill-name">Robotics</div>
+                    <div>Autonomous Systems, Control Theory</div>
                 </div>
                 <div class="skill-item">
                     <div class="skill-name">Machine Learning</div>
                     <div>Deep Learning, Reinforcement Learning</div>
                 </div>
                 <div class="skill-item">
-                    <div class="skill-name">Robotics</div>
-                    <div>Autonomous Systems, Control Theory</div>
+                    <div class="skill-name">Systems Engineering</div>
+                    <div>Complex Systems, Integration</div>
                 </div>
                 <div class="skill-item">
                     <div class="skill-name">Programming</div>
@@ -834,7 +602,7 @@
                 <h1 class="page-title">EXPERIENCE</h1>
                 <p class="page-subtitle">Professional Journey</p>
             </div>
-            
+
             <div class="content-grid">
                 <div class="content-card">
                     <h3 class="card-title">Senior Robotics Engineer</h3>
@@ -843,7 +611,7 @@
                         Lead development of next-generation neural interface systems for robotic control. Designed and implemented brain-computer interface protocols that achieved 95% accuracy in intention recognition. Managed a team of 6 engineers and researchers, overseeing projects with budgets exceeding $2M.
                     </div>
                 </div>
-                
+
                 <div class="content-card">
                     <h3 class="card-title">Research Scientist</h3>
                     <div class="card-subtitle">Advanced Robotics Institute | 2018 - 2020</div>
@@ -851,7 +619,7 @@
                         Conducted groundbreaking research in human-robot interaction and autonomous navigation systems. Published 12 peer-reviewed papers and secured $1.5M in research funding. Developed novel algorithms for real-time sensor fusion and decision-making in complex environments.
                     </div>
                 </div>
-                
+
                 <div class="content-card">
                     <h3 class="card-title">Robotics Engineer</h3>
                     <div class="card-subtitle">TechnoBot Solutions | 2016 - 2018</div>
@@ -859,7 +627,7 @@
                         Designed and programmed autonomous mobile robots for industrial applications. Implemented machine learning algorithms for object recognition and path planning. Collaborated with cross-functional teams to deliver robotic solutions for manufacturing and logistics.
                     </div>
                 </div>
-                
+
                 <div class="content-card">
                     <h3 class="card-title">Graduate Research Assistant</h3>
                     <div class="card-subtitle">MIT Robotics Lab | 2014 - 2016</div>
@@ -878,7 +646,7 @@
                 <h1 class="page-title">PROJECTS</h1>
                 <p class="page-subtitle">Innovation in Action</p>
             </div>
-            
+
             <div class="projects-grid">
                 <div class="project-card">
                     <h3 class="project-title">NeuroLink Control System</h3>
@@ -892,7 +660,7 @@
                         <span class="tech-tag">Real-time Systems</span>
                     </div>
                 </div>
-                
+
                 <div class="project-card">
                     <h3 class="project-title">Autonomous Navigation AI</h3>
                     <div class="card-content">
@@ -905,7 +673,7 @@
                         <span class="tech-tag">Computer Vision</span>
                     </div>
                 </div>
-                
+
                 <div class="project-card">
                     <h3 class="project-title">Swarm Intelligence Platform</h3>
                     <div class="card-content">
@@ -918,7 +686,7 @@
                         <span class="tech-tag">Network Protocols</span>
                     </div>
                 </div>
-                
+
                 <div class="project-card">
                     <h3 class="project-title">Haptic Feedback Interface</h3>
                     <div class="card-content">
@@ -931,7 +699,7 @@
                         <span class="tech-tag">Real-time Control</span>
                     </div>
                 </div>
-                
+
                 <div class="project-card">
                     <h3 class="project-title">Adaptive Learning Robot</h3>
                     <div class="card-content">
@@ -944,7 +712,7 @@
                         <span class="tech-tag">Adaptive Control</span>
                     </div>
                 </div>
-                
+
                 <div class="project-card">
                     <h3 class="project-title">Human-Robot Collaboration Suite</h3>
                     <div class="card-content">
@@ -968,50 +736,50 @@
                 <h1 class="page-title">PUBLICATIONS</h1>
                 <p class="page-subtitle">Research Contributions</p>
             </div>
-            
+
             <div class="content-grid">
                 <div class="publication-item">
                     <div class="pub-title">"Neural Interface Architectures for Robotic Control: A Comprehensive Survey"</div>
                     <div class="pub-authors">S. Etemad, M. Johnson, L. Chen, A. Rodriguez</div>
                     <div class="pub-venue">IEEE Transactions on Robotics, 2024</div>
                 </div>
-                
+
                 <div class="publication-item">
                     <div class="pub-title">"Real-time EEG-based Motor Intention Decoding for Prosthetic Control"</div>
                     <div class="pub-authors">S. Etemad, K. Park, J. Williams</div>
                     <div class="pub-venue">Nature Biomedical Engineering, 2023</div>
                 </div>
-                
+
                 <div class="publication-item">
                     <div class="pub-title">"Adaptive Multi-Agent Systems for Swarm Robotics Applications"</div>
                     <div class="pub-authors">S. Etemad, R. Singh, T. Zhang, M. Davis</div>
                     <div class="pub-venue">International Conference on Robotics and Automation (ICRA), 2023</div>
                 </div>
-                
+
                 <div class="publication-item">
                     <div class="pub-title">"Haptic Feedback Systems in Teleoperated Robotics: Design and Implementation"</div>
                     <div class="pub-authors">S. Etemad, A. Kumar, S. Lee</div>
                     <div class="pub-venue">IEEE Robotics and Automation Letters, 2022</div>
                 </div>
-                
+
                 <div class="publication-item">
                     <div class="pub-title">"Deep Reinforcement Learning for Autonomous Navigation in Dynamic Environments"</div>
                     <div class="pub-authors">S. Etemad, P. Thompson, N. Patel</div>
                     <div class="pub-venue">Robotics: Science and Systems (RSS), 2022</div>
                 </div>
-                
+
                 <div class="publication-item">
                     <div class="pub-title">"Bio-inspired Control Algorithms for Collective Robot Behavior"</div>
                     <div class="pub-authors">S. Etemad, H. Kim, J. Anderson</div>
                     <div class="pub-venue">IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2021</div>
                 </div>
-                
+
                 <div class="publication-item">
                     <div class="pub-title">"Neural Signal Processing Techniques for Brain-Computer Interfaces"</div>
                     <div class="pub-authors">S. Etemad, C. Wilson, F. Martinez</div>
                     <div class="pub-venue">Journal of Neural Engineering, 2021</div>
                 </div>
-                
+
                 <div class="publication-item">
                     <div class="pub-title">"Human-Robot Interaction: Safety and Efficiency in Collaborative Workspaces"</div>
                     <div class="pub-authors">S. Etemad, G. Brown, E. Taylor</div>
@@ -1028,7 +796,7 @@
                 <h1 class="page-title">BLOG</h1>
                 <p class="page-subtitle">Thoughts & Insights</p>
             </div>
-            
+
             <div class="blog-post">
                 <h3 class="blog-title">The Future of Neural Interfaces in Robotics</h3>
                 <div class="blog-date">March 15, 2024</div>
@@ -1036,7 +804,7 @@
                     As we stand on the brink of a new era in human-machine interaction, neural interfaces are poised to revolutionize how we control and collaborate with robotic systems. This post explores the latest breakthroughs in brain-computer interface technology and their implications for the future of robotics...
                 </div>
             </div>
-            
+
             <div class="blog-post">
                 <h3 class="blog-title">Swarm Intelligence: Lessons from Nature</h3>
                 <div class="blog-date">February 28, 2024</div>
@@ -1044,7 +812,7 @@
                     Nature has perfected the art of collective intelligence through millions of years of evolution. From ant colonies to bird flocks, biological systems demonstrate remarkable coordination without centralized control. In this article, I examine how these principles can be applied to multi-robot systems...
                 </div>
             </div>
-            
+
             <div class="blog-post">
                 <h3 class="blog-title">Ethical Considerations in Autonomous Robotics</h3>
                 <div class="blog-date">February 12, 2024</div>
@@ -1052,7 +820,7 @@
                     As autonomous robots become increasingly capable and prevalent in our society, we must carefully consider the ethical implications of their deployment. This post discusses key ethical challenges including accountability, transparency, and the impact on human employment...
                 </div>
             </div>
-            
+
             <div class="blog-post">
                 <h3 class="blog-title">Deep Learning Architectures for Real-time Control</h3>
                 <div class="blog-date">January 30, 2024</div>
@@ -1060,7 +828,7 @@
                     Real-time control applications in robotics demand neural networks that can process information and make decisions within strict timing constraints. This technical deep-dive explores optimized architectures and training techniques that enable deep learning models to meet real-time requirements...
                 </div>
             </div>
-            
+
             <div class="blog-post">
                 <h3 class="blog-title">Building Trust in Human-Robot Teams</h3>
                 <div class="blog-date">January 18, 2024</div>
@@ -1068,7 +836,7 @@
                     Trust is a fundamental component of effective human-robot collaboration. Through my research and practical experience, I've identified key factors that influence trust formation between humans and robotic systems. This post outlines strategies for designing trustworthy robotic partners...
                 </div>
             </div>
-            
+
             <div class="blog-post">
                 <h3 class="blog-title">The Science of Haptic Feedback</h3>
                 <div class="blog-date">December 20, 2023</div>
@@ -1086,11 +854,11 @@
                 <h1 class="page-title">CONTACT</h1>
                 <p class="page-subtitle">Let's Connect</p>
             </div>
-            
+
             <div class="contact-info">
                 <div class="contact-item">
                     <div class="contact-label">Email</div>
-                    <div>soroush.etemad@neurallab.com</div>
+                    <div>skadoosh2710@gmail.com</div>
                 </div>
                 <div class="contact-item">
                     <div class="contact-label">Phone</div>
@@ -1109,905 +877,223 @@
             <form class="contact-form">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" name="name" required />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" required />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required>
+                    <input type="text" id="subject" name="subject" required />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="message">Message</label>
                     <textarea id="message" name="message" rows="6" required></textarea>
                 </div>
-                
-                <button type="submit" class="neural-button">TRANSMIT MESSAGE</button>
+
+                <button type="submit">TRANSMIT MESSAGE</button>
             </form>
         </div>
     </div>
 
     <script>
-        // Navigation and page switching
+        /* --------------------------- */
+        /*    PAGE NAVIGATION LOGIC    */
+        /* --------------------------- */
         function showPage(pageId) {
-            // Hide all pages
             const pages = document.querySelectorAll('.page');
-            pages.forEach(page => page.classList.remove('active'));
-            
-            // Show selected page
+            pages.forEach((p) => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            
-            // Update navigation
+
             const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => link.classList.remove('active'));
+            navLinks.forEach((link) => link.classList.remove('active'));
             event.target.classList.add('active');
-            
-            // Scroll to top
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Canvas setup for interactive waves
-        const canvas = document.getElementById('waveCanvas');
+        /* --------------------------- */
+        /*      CUSTOM CURSOR LOGIC    */
+        /* --------------------------- */
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        /* --------------------------- */
+        /*    NEURAL NETWORK CANVAS     */
+        /* --------------------------- */
+        const canvas = document.getElementById('neuralCanvas');
         const ctx = canvas.getContext('2d');
-        let mouse = { x: 0, y: 0 };
-        let waves = [];
+        let nodes = [];
+        let connections = [];
+
+        // Track mouse for interactivity
+        const mouse = { x: null, y: null };
+        // When user clicks, scatter nearby nodes
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+            nodes.forEach((node) => {
+                const dx = node.x - clickX;
+                const dy = node.y - clickY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    // push node away slightly
+                    const pushX = (dx / dist) * 15;
+                    const pushY = (dy / dist) * 15;
+                    node.x += pushX;
+                    node.y += pushY;
+                }
+            });
+        });
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            initNetwork();
         }
 
-        // Wave class for interactive background
-        class Wave {
+        // Node class
+        class Node {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.radius = 0;
-                this.maxRadius = Math.random() * 100 + 50;
-                this.speed = Math.random() * 2 + 1;
-                this.alpha = 1;
-                this.color = `hsl(${Math.random() * 60 + 180}, 70%, 50%)`;
+                this.baseRadius = 4;
+                this.radius = this.baseRadius;
+                this.glow = Math.random(); // initial random phase
             }
-
-            update() {
-                this.radius += this.speed;
-                this.alpha = 1 - (this.radius / this.maxRadius);
-                
-                if (this.radius >= this.maxRadius) {
-                    return false;
-                }
-                return true;
-            }
-
             draw() {
-                ctx.save();
-                ctx.globalAlpha = this.alpha * 0.3;
-                ctx.strokeStyle = this.color;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.stroke();
-                ctx.restore();
-            }
-        }
-
-        // Floating particles
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 2;
-                this.vy = (Math.random() - 0.5) * 2;
-                this.life = Math.random() * 100 + 50;
-                this.maxLife = this.life;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.life--;
-
-                // Mouse interaction
-                const dx = mouse.x - this.x;
-                const dy = mouse.y - this.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < 100) {
-                    const force = (100 - distance) / 100;
-                    this.vx += dx * force * 0.01;
-                    this.vy += dy * force * 0.01;
+                // distance to mouse
+                let hoverFactor = 0;
+                if (mouse.x !== null && mouse.y !== null) {
+                    const dxm = this.x - mouse.x;
+                    const dym = this.y - mouse.y;
+                    const distMouse = Math.sqrt(dxm * dxm + dym * dym);
+                    if (distMouse < 80) {
+                        hoverFactor = (80 - distMouse) / 80; // 0..1
+                    }
                 }
+                // base glow
+                const baseIntensity = 0.5 + 0.5 * Math.sin(this.glow * Math.PI * 2);
+                // final intensity tweaked by hover
+                const intensity = Math.min(1, baseIntensity + hoverFactor * 0.7);
+                const alpha = 0.3 + 0.7 * intensity;
+                // scale radius by hoverFactor
+                const r = this.baseRadius * (1 + 0.5 * intensity);
 
-                // Boundary check
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-
-                return this.life > 0;
-            }
-
-            draw() {
-                const alpha = this.life / this.maxLife;
-                ctx.save();
-                ctx.globalAlpha = alpha * 0.6;
-                ctx.fillStyle = '#00ffff';
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(30,144,255,${alpha})`;
                 ctx.fill();
-                ctx.restore();
+            }
+            update() {
+                this.glow += 0.004;
+                if (this.glow > 1) this.glow = 0;
             }
         }
 
-        let particles = [];
-        for (let i = 0; i < 150; i++) {
-            particles.push(new Particle());
+        // Connection class
+        class Connection {
+            constructor(a, b) {
+                this.a = a;
+                this.b = b;
+                this.pulse = Math.random(); // random phase
+            }
+            draw() {
+                // distance from midpoint to mouse
+                const mx = (this.a.x + this.b.x) / 2;
+                const my = (this.a.y + this.b.y) / 2;
+                let hoverLine = 0;
+                if (mouse.x !== null && mouse.y !== null) {
+                    const dxm = mx - mouse.x;
+                    const dym = my - mouse.y;
+                    const distMid = Math.sqrt(dxm * dxm + dym * dym);
+                    if (distMid < 100) {
+                        hoverLine = (100 - distMid) / 100; // 0..1
+                    }
+                }
+                // animate pulse
+                const phase = this.pulse + performance.now() * 0.0008;
+                const baseAlpha = 0.2 + 0.4 * (0.5 + 0.5 * Math.sin(phase * Math.PI * 2));
+                const alpha = Math.min(1, baseAlpha + hoverLine * 0.5);
+
+                ctx.beginPath();
+                ctx.moveTo(this.a.x, this.a.y);
+                ctx.lineTo(this.b.x, this.b.y);
+                ctx.strokeStyle = `rgba(30,144,255,${alpha})`;
+                ctx.lineWidth = 1 + hoverLine * 1; // line thickens on hover
+                ctx.stroke();
+            }
+            update() {
+                this.pulse += 0.0015;
+                if (this.pulse > 1) this.pulse = 0;
+            }
         }
 
-        function animate() {
+        function initNetwork() {
+            nodes = [];
+            connections = [];
+            const count = Math.floor((canvas.width * canvas.height) / 80000);
+            for (let i = 0; i < count; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                nodes.push(new Node(x, y));
+            }
+            // connect each node to its 2 nearest neighbors
+            for (let i = 0; i < nodes.length; i++) {
+                let nearest = [];
+                for (let j = 0; j < nodes.length; j++) {
+                    if (i === j) continue;
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const d = dx * dx + dy * dy;
+                    nearest.push({ idx: j, dist: d });
+                }
+                nearest.sort((a, b) => a.dist - b.dist);
+                for (let k = 0; k < 2 && k < nearest.length; k++) {
+                    connections.push(new Connection(nodes[i], nodes[nearest[k].idx]));
+                }
+            }
+        }
+
+        function animateNetwork() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Update and draw waves
-            waves = waves.filter(wave => {
-                wave.update();
-                wave.draw();
-                return wave.radius < wave.maxRadius;
+            // draw connections first
+            connections.forEach((conn) => {
+                conn.update();
+                conn.draw();
             });
-
-            // Update and draw particles
-            particles = particles.filter(particle => {
-                particle.update();
-                particle.draw();
-                return particle.life > 0;
+            // draw nodes on top
+            nodes.forEach((node) => {
+                node.update();
+                node.draw();
             });
-
-            // Add new particles
-            if (particles.length < 150) {
-                particles.push(new Particle());
-            }
-
-            requestAnimationFrame(animate);
+            requestAnimationFrame(animateNetwork);
         }
 
-        // Loading Screen
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                document.getElementById('loading').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loading').style.display = 'none';
-                    resizeCanvas();
-                    animate();
-                }, 1500);
-            }, 3000);
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('load', () => {
+            resizeCanvas();
+            animateNetwork();
         });
 
-        // Mouse tracking
-        document.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-            
-            // Update cursor position
-            document.getElementById('cursor').style.left = e.clientX + 'px';
-            document.getElementById('cursor').style.top = e.clientY + 'px';
-            
-            // Create interactive waves
-            if (Math.random() < 0.1) {
-                waves.push(new Wave(e.clientX, e.clientY));
-            }
-        });
-
-        // Click interactions
-        document.addEventListener('click', (e) => {
-            // Create multiple waves on click
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    waves.push(new Wave(e.clientX, e.clientY));
-                }, i * 100);
-            }
-        });
-
-        // Button interactions
-        document.querySelectorAll('.neural-button').forEach(button => {
-            button.addEventListener('mouseenter', () => {
-                document.getElementById('cursor').style.transform = 'scale(2)';
-                document.getElementById('cursor').style.background = 'radial-gradient(circle, rgba(255, 0, 255, 0.8), transparent)';
-            });
-            
-            button.addEventListener('mouseleave', () => {
-                document.getElementById('cursor').style.transform = 'scale(1)';
-                document.getElementById('cursor').style.background = 'radial-gradient(circle, rgba(0, 255, 255, 0.8), transparent)';
-            });
-        });
-
-        // Form submission
-        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+        /* --------------------------- */
+        /*    CONTACT FORM HANDLER     */
+        /* --------------------------- */
+        document.querySelector('.contact-form').addEventListener('submit', function (e) {
             e.preventDefault();
             alert('Message transmitted successfully! I will respond within 24 hours.');
             this.reset();
         });
-
-        // Resize handling
-        window.addEventListener('resize', resizeCanvas);
-
-        // Initialize
-        resizeCanvas();
     </script>
 </body>
 </html>
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neural Interface | Robotics Engineer</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Orbitron', monospace;
-            background: #000;
-            color: #fff;
-            overflow-x: hidden;
-            cursor: none;
-        }
-
-        /* Custom Cursor */
-        .cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, #00ffff, transparent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.1s ease;
-        }
-
-        .cursor-trail {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            background: #00ffff;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            opacity: 0.7;
-        }
-
-        /* Animated Background */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #000428, #004e92, #000428, #009ffd);
-            background-size: 400% 400%;
-            animation: gradientShift 8s ease infinite;
-            z-index: -2;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Particle System */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            background: #00ffff;
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
-            50% { transform: translateY(-100px) rotate(180deg); opacity: 1; }
-        }
-
-        /* Geometric Shapes */
-        .geometric-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .shape {
-            position: absolute;
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            animation: rotate 20s linear infinite;
-        }
-
-        .shape.triangle {
-            width: 0;
-            height: 0;
-            border-left: 25px solid transparent;
-            border-right: 25px solid transparent;
-            border-bottom: 43px solid rgba(0, 255, 255, 0.1);
-            border-radius: 0;
-        }
-
-        .shape.square {
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 255, 255, 0.05);
-        }
-
-        .shape.circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 0, 255, 0.1);
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.2); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 2rem;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-        }
-
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, #00ffff, #ff00ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 3rem;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        nav a::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            background: linear-gradient(45deg, #00ffff, #ff00ff);
-            z-index: -1;
-            opacity: 0;
-            border-radius: 4px;
-            transition: opacity 0.3s ease;
-        }
-
-        nav a:hover::before {
-            opacity: 0.3;
-        }
-
-        nav a:hover {
-            color: #00ffff;
-            text-shadow: 0 0 10px #00ffff;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            z-index: 10;
-            position: relative;
-        }
-
-        .glitch-text {
-            font-size: 5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 2rem;
-            position: relative;
-            animation: glitch 2s infinite;
-        }
-
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-
-        .glitch-text::before,
-        .glitch-text::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .glitch-text::before {
-            animation: glitchTop 1s linear infinite;
-            clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
-            -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
-        }
-
-        .glitch-text::after {
-            animation: glitchBottom 1.5s linear infinite;
-            clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
-            -webkit-clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
-        }
-
-        @keyframes glitchTop {
-            2%, 64% { transform: translate(2px, -2px); }
-            4%, 60% { transform: translate(-2px, 2px); }
-            62% { transform: translate(13px, -1px) skew(-13deg); }
-        }
-
-        @keyframes glitchBottom {
-            2%, 64% { transform: translate(-2px, 0); }
-            4%, 60% { transform: translate(-2px, 0); }
-            62% { transform: translate(-22px, 5px) skew(21deg); }
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 3rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .neural-line {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #00ffff, transparent);
-            margin: 2rem 0;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: scaleX(1); }
-            50% { opacity: 1; transform: scaleX(1.1); }
-        }
-
-        /* Interactive Button */
-        .neural-button {
-            position: relative;
-            display: inline-block;
-            padding: 1rem 3rem;
-            background: transparent;
-            border: 2px solid #00ffff;
-            color: #00ffff;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-
-        .neural-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, #00ffff, transparent);
-            transition: left 0.5s ease;
-        }
-
-        .neural-button:hover::before {
-            left: 100%;
-        }
-
-        .neural-button:hover {
-            color: #000;
-            background: #00ffff;
-            box-shadow: 0 0 30px #00ffff;
-            text-shadow: none;
-        }
-
-        /* Data Streams */
-        .data-stream {
-            position: fixed;
-            top: 0;
-            width: 2px;
-            height: 100vh;
-            background: linear-gradient(180deg, transparent, #00ffff, transparent);
-            animation: stream 3s linear infinite;
-            z-index: 1;
-        }
-
-        @keyframes stream {
-            0% { transform: translateY(-100vh); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(100vh); opacity: 0; }
-        }
-
-        /* Holographic Effect */
-        .holo-card {
-            position: absolute;
-            width: 300px;
-            height: 200px;
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            transform-style: preserve-3d;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .holo-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .holo-card:hover::before {
-            opacity: 1;
-        }
-
-        /* Scan Lines */
-        .scan-lines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                transparent 0%,
-                rgba(0, 255, 255, 0.03) 50%,
-                transparent 100%
-            );
-            background-size: 100% 4px;
-            animation: scan 0.1s linear infinite;
-            pointer-events: none;
-            z-index: 100;
-        }
-
-        @keyframes scan {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 4px; }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .glitch-text {
-                font-size: 3rem;
-            }
-            
-            nav ul {
-                gap: 1.5rem;
-            }
-            
-            .neural-button {
-                padding: 0.8rem 2rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Loading Animation */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            transition: opacity 1s ease;
-        }
-
-        .loading-text {
-            font-size: 2rem;
-            color: #00ffff;
-            animation: loadingPulse 1s ease-in-out infinite;
-        }
-
-        @keyframes loadingPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-    </style>
-</head>
-<body>
-    <!-- Loading Screen -->
-    <div class="loading" id="loading">
-        <div class="loading-text">INITIALIZING NEURAL INTERFACE...</div>
-    </div>
-
-    <!-- Custom Cursor -->
-    <div class="cursor" id="cursor"></div>
-
-    <!-- Background Animations -->
-    <div class="bg-animation"></div>
-    <div class="scan-lines"></div>
-    
-    <!-- Particles -->
-    <div class="particles" id="particles"></div>
-    
-    <!-- Geometric Shapes -->
-    <div class="geometric-bg" id="geometric"></div>
-
-    <!-- Navigation -->
-    <nav>
-        <div class="container">
-            <div class="logo">NEURAL_LINK</div>
-            <ul>
-                <li><a href="#system">SYSTEM</a></li>
-                <li><a href="#protocols">PROTOCOLS</a></li>
-                <li><a href="#interface">INTERFACE</a></li>
-                <li><a href="#contact">CONTACT</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="glitch-text" data-text="NEURAL INTERFACE">NEURAL INTERFACE</h1>
-            <div class="neural-line"></div>
-            <p class="subtitle">Advanced Robotics Systems Engineer</p>
-            <div class="neural-line"></div>
-            <a href="#system" class="neural-button">INITIALIZE PROTOCOL</a>
-        </div>
-        
-        <!-- Holographic Cards -->
-        <div class="holo-card" style="top: 20%; left: 10%; animation-delay: -2s;"></div>
-        <div class="holo-card" style="top: 60%; right: 10%; animation-delay: -4s;"></div>
-    </section>
-
-    <script>
-        // Loading Screen
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                document.getElementById('loading').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loading').style.display = 'none';
-                }, 1000);
-            }, 2000);
-        });
-
-        // Custom Cursor
-        const cursor = document.getElementById('cursor');
-        const trails = [];
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            
-            // Create cursor trail
-            const trail = document.createElement('div');
-            trail.className = 'cursor-trail';
-            trail.style.left = e.clientX + 'px';
-            trail.style.top = e.clientY + 'px';
-            document.body.appendChild(trail);
-            
-            trails.push(trail);
-            
-            setTimeout(() => {
-                trail.style.opacity = '0';
-                setTimeout(() => {
-                    if (trail.parentNode) {
-                        trail.parentNode.removeChild(trail);
-                    }
-                    trails.splice(trails.indexOf(trail), 1);
-                }, 500);
-            }, 100);
-        });
-
-        // Particle System
-        function createParticles() {
-            const container = document.getElementById('particles');
-            
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.width = Math.random() * 4 + 2 + 'px';
-                particle.style.height = particle.style.width;
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
-                container.appendChild(particle);
-            }
-        }
-
-        // Geometric Shapes
-        function createGeometricShapes() {
-            const container = document.getElementById('geometric');
-            const shapes = ['triangle', 'square', 'circle'];
-            
-            for (let i = 0; i < 20; i++) {
-                const shape = document.createElement('div');
-                const shapeType = shapes[Math.floor(Math.random() * shapes.length)];
-                shape.className = `shape ${shapeType}`;
-                shape.style.left = Math.random() * 100 + '%';
-                shape.style.top = Math.random() * 100 + '%';
-                shape.style.animationDelay = Math.random() * 20 + 's';
-                shape.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                container.appendChild(shape);
-            }
-        }
-
-        // Data Streams
-        function createDataStreams() {
-            for (let i = 0; i < 5; i++) {
-                const stream = document.createElement('div');
-                stream.className = 'data-stream';
-                stream.style.left = Math.random() * 100 + '%';
-                stream.style.animationDelay = Math.random() * 3 + 's';
-                stream.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                document.body.appendChild(stream);
-                
-                setTimeout(() => {
-                    if (stream.parentNode) {
-                        stream.parentNode.removeChild(stream);
-                    }
-                }, 5000);
-            }
-        }
-
-        // Mouse Interactions
-        document.addEventListener('mousemove', (e) => {
-            const shapes = document.querySelectorAll('.shape');
-            const mouseX = e.clientX / window.innerWidth;
-            const mouseY = e.clientY / window.innerHeight;
-            
-            shapes.forEach((shape, index) => {
-                const speed = (index + 1) * 0.5;
-                const x = (mouseX - 0.5) * speed;
-                const y = (mouseY - 0.5) * speed;
-                shape.style.transform += ` translate(${x}px, ${y}px)`;
-            });
-        });
-
-        // Glitch Effect on Click
-        document.addEventListener('click', () => {
-            const glitchText = document.querySelector('.glitch-text');
-            glitchText.style.animation = 'none';
-            setTimeout(() => {
-                glitchText.style.animation = 'glitch 2s infinite';
-            }, 10);
-        });
-
-        // Interactive Button Effects
-        document.querySelectorAll('.neural-button').forEach(button => {
-            button.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(2)';
-                cursor.style.background = 'radial-gradient(circle, #ff00ff, transparent)';
-            });
-            
-            button.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursor.style.background = 'radial-gradient(circle, #00ffff, transparent)';
-            });
-        });
-
-        // Scroll Effects
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const rate = scrolled * -0.5;
-            
-            document.querySelector('.hero-content').style.transform = `translateY(${rate}px)`;
-        });
-
-        // Initialize
-        createParticles();
-        createGeometricShapes();
-        
-        // Continuous effects
-        setInterval(createDataStreams, 2000);
-        
-        // Audio Context (Optional - uncomment if you want sound effects)
-        /*
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playTone(frequency, duration) {
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = frequency;
-            oscillator.type = 'sine';
-            
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-            
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + duration);
-        }
-        
-        document.addEventListener('click', () => {
-            playTone(800, 0.1);
-        });
-        */
-
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    </script>
-</body>
-</html> -->
