@@ -3,1627 +3,515 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
-    <title>Soroush Etemad | Robotics Systems Engineer</title>
-    <!-- Favicon -->
-    <link rel="icon" href="images/profile.jpg" type="image/jpeg" />
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
-
-        /* --------------------------- */
-        /*     GLOBAL / RESET STYLES   */
-        /* --------------------------- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        html, body {
-            width: 100%;
-            height: 100%;
-        }
-        body {
-            font-family: 'Orbitron', monospace;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            overflow-x: hidden;
-            cursor: none;
-            line-height: 1.6;
-        }
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        ul {
-            list-style: none;
-        }
-
-        /* -------------------------------- */
-        /*   CANVAS FOR NEURAL BACKGROUND   */
-        /* -------------------------------- */
-        #neuralCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            background: #000000;
-        }
-
-        /* --------------------------- */
-        /*       CUSTOM CURSOR         */
-        /* --------------------------- */
-        .cursor {
-            position: fixed;
-            width: 24px;
-            height: 24px;
-            background: rgba(30, 144, 255, 0.7);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: screen;
-            transition: transform 0.1s ease;
-            border: 1px solid rgba(30, 144, 255, 0.5);
-        }
-        .cursor::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 8px;
-            height: 8px;
-            background: #ff001e;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: cursorPulse 1.8s ease-in-out infinite;
-        }
-        @keyframes cursorPulse {
-            0%, 100% {
-                opacity: 0.6;
-                transform: translate(-50%, -50%) scale(1);
-            }
-            50% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.4);
-            }
-        }
-
-        /* Hide cursor on mobile */
-        @media (max-width: 768px) {
-            .cursor {
-                display: none;
-            }
-            body {
-                cursor: auto;
-            }
-        }
-
-        /* --------------------------- */
-        /*          NAVIGATION         */
-        /* --------------------------- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 2rem;
-            z-index: 1000;
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(30, 144, 255, 0.2);
-        }
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: #1e90ff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        /* Desktop Navigation */
-        .nav-menu {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        nav a.nav-link {
-            color: rgba(224, 224, 224, 0.85);
-            font-weight: 500;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            transition: color 0.3s ease;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            min-height: 44px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        nav a.nav-link:hover,
-        nav a.nav-link.active {
-            color: #1e90ff;
-            background: rgba(30, 144, 255, 0.1);
-        }
-
-        /* Mobile Hamburger Menu */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            padding: 0.5rem;
-            z-index: 1001;
-        }
-        .hamburger span {
-            width: 25px;
-            height: 3px;
-            background: #1e90ff;
-            margin: 3px 0;
-            transition: 0.3s;
-            border-radius: 2px;
-        }
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(-45deg) translate(-5px, 6px);
-        }
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(45deg) translate(-5px, -6px);
-        }
-
-        /* Mobile Navigation Styles */
-        @media (max-width: 768px) {
-            nav {
-                padding: 1rem;
-            }
-            .logo {
-                font-size: 1.2rem;
-            }
-            .hamburger {
-                display: flex;
-            }
-            .nav-menu {
-                position: fixed;
-                left: -100%;
-                top: 70px;
-                flex-direction: column;
-                background: rgba(10, 10, 10, 0.95);
-                backdrop-filter: blur(20px);
-                width: 100%;
-                text-align: center;
-                transition: 0.3s;
-                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-                border-top: 1px solid rgba(30, 144, 255, 0.2);
-                padding: 2rem 0;
-                gap: 0;
-            }
-            .nav-menu.active {
-                left: 0;
-            }
-            .nav-menu li {
-                margin: 0.5rem 0;
-            }
-            nav a.nav-link {
-                font-size: 1rem;
-                padding: 1rem 2rem;
-                width: 100%;
-                justify-content: center;
-                border-radius: 0;
-            }
-        }
-
-        /* --------------------------- */
-        /*   SECTION CONTAINER         */
-        /* --------------------------- */
-        .section {
-            min-height: 100vh;
-            padding-top: 80px;
-            position: relative;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        /* --------------------------- */
-        /*       HERO SECTION          */
-        /* --------------------------- */
-        .hero {
-            height: calc(100vh - 80px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-        }
-        .hero-content {
-            z-index: 10;
-        }
-        .hero img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(30, 144, 255, 0.3);
-            margin-bottom: 1.5rem;
-            object-fit: cover;
-            border: 2px solid #1e90ff;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .hero img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(30, 144, 255, 0.5);
-        }
-        .name-title {
-            font-size: 4rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #e0e0e0;
-            margin-bottom: 1rem;
-        }
-        .subtitle {
-            font-size: 1.2rem;
-            color: rgba(224, 224, 224, 0.7);
-            margin-bottom: 2.5rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        .neural-button {
-            position: relative;
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: #1e90ff;
-            color: #0a0a0a;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-            border: none;
-            border-radius: 40px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            min-height: 44px;
-        }
-        .neural-button:hover {
-            background: #0f78d4;
-            box-shadow: 0 0 20px rgba(30, 144, 255, 0.4);
-            transform: translateY(-4px) scale(1.05);
-        }
-
-        /* Mobile Hero Adjustments */
-        @media (max-width: 768px) {
-            .hero {
-                padding: 2rem 1rem;
-            }
-            .hero img {
-                width: 120px;
-                height: 120px;
-            }
-            .name-title {
-                font-size: 2.5rem;
-                letter-spacing: 1px;
-            }
-            .subtitle {
-                font-size: 1rem;
-                letter-spacing: 1px;
-            }
-            .neural-button {
-                padding: 0.8rem 2rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* --------------------------- */
-        /*     SECTION HEADERS         */
-        /* --------------------------- */
-        .page-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding-top: 2rem;
-        }
-        .page-title {
-            font-size: 3rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #1e90ff;
-            margin-bottom: 0.5rem;
-        }
-        .page-subtitle {
-            font-size: 1rem;
-            color: rgba(224, 224, 224, 0.7);
-            letter-spacing: 1px;
-        }
-
-        @media (max-width: 768px) {
-            .page-title {
-                font-size: 2rem;
-            }
-            .page-subtitle {
-                font-size: 0.9rem;
-            }
-        }
-
-        /* --------------------------- */
-        /*      CONTENT CARDS          */
-        /* --------------------------- */
-        .content-grid {
-            display: grid;
-            gap: 2.5rem;
-        }
-        .content-card {
-            background: #111;
-            border: 1px solid rgba(30, 144, 255, 0.1);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .content-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 30px rgba(30, 144, 255, 0.2);
-        }
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #1e90ff;
-            margin-bottom: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .card-subtitle {
-            font-size: 0.95rem;
-            color: rgba(224, 224, 224, 0.7);
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-        .card-content {
-            color: rgba(224, 224, 224, 0.85);
-            line-height: 1.8;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-        }
-
-        /* Projects card content */
-        .project-card .card-content {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-        }
-
-        @media (max-width: 768px) {
-            .content-card {
-                padding: 1.5rem;
-            }
-            .card-title {
-                font-size: 1.2rem;
-            }
-        }
-
-        /* --------------------------- */
-        /*       SKILLS GRID           */
-        /* --------------------------- */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        .skill-item {
-            text-align: center;
-            padding: 1.5rem;
-            background: #111;
-            border: 1px solid rgba(30, 144, 255, 0.1);
-            border-radius: 10px;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-        .skill-item:hover {
-            background: rgba(30, 144, 255, 0.1);
-            transform: translateY(-4px);
-        }
-        .skill-name {
-            font-weight: 700;
-            color: #1e90ff;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        @media (max-width: 768px) {
-            .skills-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 1rem;
-            }
-            .skill-item {
-                padding: 1rem;
-            }
-        }
-
-        /* --------------------------- */
-        /*      PROJECTS GRID          */
-        /* --------------------------- */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        .project-card {
-            background: #111;
-            border: 1px solid rgba(30, 144, 255, 0.1);
-            border-radius: 12px;
-            padding: 1.8rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .project-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 30px rgba(30, 144, 255, 0.2);
-        }
-        .project-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #1e90ff;
-            margin-bottom: 0.7rem;
-            text-transform: uppercase;
-        }
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.8rem;
-        }
-        .tech-tag {
-            background: rgba(30, 144, 255, 0.1);
-            color: #1e90ff;
-            padding: 0.3rem 0.7rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        @media (max-width: 768px) {
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-            .project-card {
-                padding: 1.5rem;
-            }
-        }
-
-        /* --------------------------- */
-        /*        PUBLICATIONS         */
-        /* --------------------------- */
-        .publication-item {
-            border-left: 3px solid #1e90ff;
-            padding-left: 1.8rem;
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-        .publication-item:hover {
-            transform: translateX(5px);
-        }
-        .pub-title {
-            font-weight: 700;
-            color: #1e90ff;
-            margin-bottom: 0.4rem;
-        }
-        .pub-authors {
-            color: rgba(224, 224, 224, 0.7);
-            font-style: italic;
-            margin-bottom: 0.4rem;
-        }
-        .pub-venue {
-            color: rgba(224, 224, 224, 0.85);
-            font-weight: 500;
-        }
-
-        /* --------------------------- */
-        /*         BLOG POSTS          */
-        /* --------------------------- */
-        .blog-post {
-            background: #111;
-            border: 1px solid rgba(30, 144, 255, 0.1);
-            border-radius: 12px;
-            padding: 1.8rem;
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .blog-post:hover {
-            transform: translateX(6px);
-            box-shadow: -8px 12px 25px rgba(30, 144, 255, 0.15);
-        }
-        .blog-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1e90ff;
-            margin-bottom: 0.4rem;
-        }
-        .blog-date {
-            color: rgba(224, 224, 224, 0.6);
-            font-size: 0.85rem;
-            margin-bottom: 0.7rem;
-        }
-        .blog-excerpt {
-            color: rgba(224, 224, 224, 0.85);
-            line-height: 1.7;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-        }
-
-        /* --------------------------- */
-        /*       CONTACT SECTION       */
-        /* --------------------------- */
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-        }
-        .contact-item {
-            text-align: center;
-            padding: 1.5rem;
-            background: #111;
-            border: 1px solid rgba(30, 144, 255, 0.1);
-            border-radius: 10px;
-            transition: transform 0.3s ease;
-        }
-        .contact-item:hover {
-            transform: translateY(-3px);
-        }
-        .contact-label {
-            font-weight: 700;
-            color: #1e90ff;
-            margin-bottom: 0.4rem;
-            text-transform: uppercase;
-        }
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .form-group {
-            margin-bottom: 1.8rem;
-        }
-        .form-group label {
-            display: block;
-            color: #1e90ff;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            background: #111;
-            border: 1px solid rgba(30, 144, 255, 0.2);
-            border-radius: 8px;
-            padding: 1rem;
-            color: #e0e0e0;
-            font-family: 'Orbitron', monospace;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            min-height: 44px;
-        }
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #1e90ff;
-            box-shadow: 0 0 12px rgba(30, 144, 255, 0.3);
-            background: #1a1a1a;
-        }
-        .contact-form button {
-            padding: 1rem 2.2rem;
-            background: #1e90ff;
-            color: #0a0a0a;
-            border: none;
-            border-radius: 40px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-height: 44px;
-        }
-        .contact-form button:hover {
-            background: #0f78d4;
-            box-shadow: 0 0 20px rgba(30, 144, 255, 0.4);
-            transform: translateY(-3px);
-        }
-
-        /* Neural firing effect */
-        @keyframes neuralFire {
-            0% {
-                opacity: 0.3;
-                transform: scale(1);
-                box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.5);
-                box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-            }
-            100% {
-                opacity: 0.3;
-                transform: scale(1);
-                box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
-            }
-        }
-
-        @keyframes connectionPulse {
-            0% {
-                stroke-width: 1;
-                opacity: 0.2;
-            }
-            50% {
-                stroke-width: 3;
-                opacity: 0.8;
-            }
-            100% {
-                stroke-width: 1;
-                opacity: 0.2;
-            }
-        }
-
-        /* Click ripple effect */
-        .click-ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(30, 144, 255, 0.6) 0%, rgba(30, 144, 255, 0) 70%);
-            pointer-events: none;
-            animation: rippleExpand 1s ease-out forwards;
-        }
-
-        @keyframes rippleExpand {
-            0% {
-                width: 0;
-                height: 0;
-                opacity: 0.8;
-            }
-            100% {
-                width: 200px;
-                height: 200px;
-                opacity: 0;
-            }
-        }
-
-        /* New node creation animation */
-        .new-node-birth {
-            animation: nodeBirth 0.8s ease-out forwards;
-        }
-
-        @keyframes nodeBirth {
-            0% {
-                opacity: 0;
-                transform: scale(0);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.5);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-    </style>
+    <title>Soroush Etemad | Robotics & AI Engineer</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="icon" href="images/face.png" type="image/png" />
 </head>
 <body>
-    <!-- CUSTOM CURSOR -->
+
     <div class="cursor" id="cursor"></div>
 
-    <!-- NEURAL NETWORK CANVAS BACKGROUND -->
+    <div id="preloader">
+        <img src="images/profile.jpg" alt="Soroush Etemad" class="preloader-profile-pic"/>
+    </div>
+
     <canvas id="neuralCanvas"></canvas>
 
-    <!-- NAVIGATION -->
     <nav>
-        <div class="container">
-            <div class="logo" onclick="scrollToSection('home')">S.ETEMAD</div>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul class="nav-menu" id="nav-menu">
-                <li><a onclick="scrollToSection('home')" class="nav-link active">HOME</a></li>
-                <li><a onclick="scrollToSection('about')" class="nav-link">ABOUT</a></li>
-                <li><a onclick="scrollToSection('experience')" class="nav-link">EXPERIENCE</a></li>
-                <li><a onclick="scrollToSection('projects')" class="nav-link">PROJECTS</a></li>
-                <li><a onclick="scrollToSection('blog')" class="nav-link">BLOG</a></li>
-                <li><a onclick="scrollToSection('contact')" class="nav-link">CONTACT</a></li>
-            </ul>
-        </div>
+        <a href="javascript:void(0)" onclick="scrollToSection('home')" class="logo">SE</a>
+        <button class="hamburger" id="hamburger-button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-menu" id="nav-menu">
+            <li><a onclick="scrollToSection('about')" class="nav-link">About</a></li>
+            <li><a onclick="scrollToSection('blog')" class="nav-link">Blog</a></li>
+            <li><a onclick="scrollToSection('experience')" class="nav-link">Experience</a></li>
+            <li><a onclick="scrollToSection('projects')" class="nav-link">Work</a></li>
+            <li><a onclick="scrollToSection('contact')" class="nav-link">Contact</a></li>
+            <li><a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="button-resume">Resume</a></li>
+        </ul>
     </nav>
-
-    <!-- HOME SECTION -->
-    <section id="home" class="section">
-        <div class="hero">
-            <div class="hero-content">
-                <img src="images/profile.jpg" alt="Soroush Etemad" style="width: 250px; height: 250px;"/>
-                <h1 class="name-title">SOROUSH ETEMAD</h1>
-                <p class="subtitle">Robotics & AI Engineer</p>
-                <button class="neural-button" onclick="scrollToSection('about')">ABOUT ME</button>
+    
+    <main>
+        <section id="home">
+            <div class="hero-layout">
+                <div class="hero-content">
+                    <p class="hero-intro">Hi, my name is</p>
+                    <h1 class="hero-name">Soroush Etemad.</h1>
+                    <h2 class="hero-tagline">I build intelligent systems.</h2>
+                    <p class="hero-description">
+                        I’m a Robotics and AI engineer specializing in building exceptional autonomous systems. My focus is on bridging the gap between human creativity and machine intelligence through innovative engineering.
+                    </p>
+                    <a href="mailto:skadoosh2710@gmail.com" class="button-primary">Get In Touch</a>
+                </div>
+                <div class="hero-image-container">
+                    <img src="images/profile.jpg" alt="Soroush Etemad" class="profile-pic"/>
+                </div>
             </div>
+        </section>
+
+        <section id="about">
+            <h2 class="section-heading">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        Hello! I'm Soroush, a robotics systems engineer with a passion for creating intelligent systems that interact with the physical world. With over 8 years of experience, my journey has taken me from industrial automation to cutting-edge neural interfaces.
+                    </p>
+                    <p>
+                        My work centers on developing the next generation of robotics and AI, focusing on control systems, machine learning, and creating robust, intuitive platforms. I believe the future lies not in replacing human capabilities, but in augmenting them.
+                    </p>
+                    <p>Here are a few technologies I’ve been working with recently:</p>
+                    <ul class="skills-list">
+                        <li>Python</li>
+                        <li>C++</li>
+                        <li>ROS</li>
+                        <li>TensorFlow</li>
+                        <li>Deep Learning</li>
+                        <li>Control Theory</li>
+                    </ul>
+                </div>
+                <div class="education-section">
+                    <h3 class="about-subheading">Education</h3>
+                    <div class="edu-timeline">
+                        <div class="edu-block">
+                            <div class="edu-header">
+                                <img src="images/umd_logo.png" alt="University Logo" class="edu-logo">
+                                <div class="edu-header-text">
+                                   <h4 class="edu-degree">Master of Engineering in Robotics</h4>
+                                   <p class="edu-school">University of Maryland, College Park</p>
+                                </div>
+                            </div>
+                            <p class="edu-dates">Aug 2023 – May 2025</p>
+                            <p class="edu-courses"><strong>Relevant Courses:</strong> Multimodal Foundation Models, Computer Vision, Perception for Autonomous Robots, Robot Planning, Advanced Software Design.</p>
+                        </div>
+                        <div class="edu-block">
+                            <div class="edu-header">
+                                <img src="images/umd_logo.png" alt="University Logo" class="edu-logo">
+                                 <div class="edu-header-text">
+                                    <h4 class="edu-degree">Bachelor of Science in Mechanical Engineering</h4>
+                                    <p class="edu-school">University of Maryland, College Park</p>
+                                </div>
+                            </div>
+                            <p class="edu-dates">Aug 2019 – May 2023</p>
+                            <p class="edu-courses"><strong>Relevant Courses:</strong> Data Structures & Algorithms, Machine Learning, Artificial Intelligence, Database Management, Deep Learning.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2 class="section-heading">Where I've Worked</h2>
+            <div class="experience-item"><h3><span class="exp-title">Senior Robotics Engineer</span> <span class="exp-company">@ Neural Dynamics Lab</span></h3><p class="exp-dates">2020 - Present</p><ul class="exp-duties"><li>Lead development of next-generation neural interface systems for robotic control.</li><li>Designed and implemented brain-computer interface protocols that achieved 95% accuracy in intention recognition.</li><li>Managed a team of 6 engineers and researchers, overseeing projects with budgets exceeding $2M.</li></ul></div>
+            <div class="experience-item"><h3><span class="exp-title">Research Scientist</span> <span class="exp-company">@ Advanced Robotics Institute</span></h3><p class="exp-dates">2018 - 2020</p><ul class="exp-duties"><li>Conducted groundbreaking research in human-robot interaction and autonomous navigation systems.</li><li>Published 12 peer-reviewed papers and secured $1.5M in research funding.</li><li>Developed novel algorithms for real-time sensor fusion and decision-making in complex environments.</li></ul></div>
+            <div class="experience-item"><h3><span class="exp-title">Robotics Engineer</span> <span class="exp-company">@ TechnoBot Solutions</span></h3><p class="exp-dates">2016 - 2018</p><ul class="exp-duties"><li>Designed and programmed autonomous mobile robots for industrial applications.</li><li>Implemented machine learning algorithms for object recognition and path planning.</li></ul></div>
+        </section>
+
+        <section id="blog">
+            <h2 class="section-heading">From My Blog</h2>
+            <ul class="blog-list">
+                <li class="blog-item">
+                    <div class="blog-header">
+                        <div class="blog-header-text">
+                            <p class="blog-date">June 07, 2025</p>
+                            <h3 class="blog-title">The Intersection of AI and Robotics</h3>
+                        </div>
+                        <button class="blog-toggle-button">+</button>
+                    </div>
+                    <div class="blog-details-wrapper">
+                        <div class="blog-content">
+                            <p>Exploring the symbiotic relationship between Artificial Intelligence and Robotics. AI provides the 'brain' for robots, enabling them to perceive, learn, and make decisions. This post delves into the latest advancements and the future trajectory of intelligent machines...</p>
+                            <a href="#" class="read-more-link">Read More &rarr;</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="blog-item">
+                    <div class="blog-header">
+                        <div class="blog-header-text">
+                            <p class="blog-date">May 22, 2025</p>
+                            <h3 class="blog-title">A Deep Dive into Reinforcement Learning</h3>
+                        </div>
+                        <button class="blog-toggle-button">+</button>
+                    </div>
+                    <div class="blog-details-wrapper">
+                        <div class="blog-content">
+                             <p>Reinforcement Learning (RL) is a powerful paradigm for training autonomous agents. Unlike supervised learning, RL agents learn from trial and error, guided by a reward signal. This article breaks down the core concepts of RL, including Q-learning, Policy Gradients, and their application in robotics...</p>
+                             <a href="#" class="read-more-link">Read More &rarr;</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section id="projects">
+            <h2 class="section-heading">Some Things I've Built</h2>
+            
+            <ul class="project-list">
+                <li class="project-item">
+                    <div class="project-content">
+                        <div>
+                            <p class="project-overline">Featured Project</p>
+                            <h3 class="project-title"><a href="#">NeuroLink Control System</a></h3>
+                            <div class="project-description">
+                                <p>A high-accuracy, non-invasive brain-computer interface designed for controlling robotic prosthetics. Achieved 98% accuracy in real-time trials using a custom deep learning model.</p>
+                            </div>
+                            <ul class="project-tech-list">
+                                <li>Python</li>
+                                <li>TensorFlow</li>
+                                <li>EEG</li>
+                                <li>Signal Processing</li>
+                            </ul>
+                            <div class="project-links">
+                                <a href="#" aria-label="GitHub Link" target="_blank" rel="noopener noreferrer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><title>GitHub</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-image">
+                        <a href="#">
+                            <img src="https://i.imgur.com/b42i3sL.gif" alt="NeuroLink Control System GIF">
+                        </a>
+                    </div>
+                </li>
+
+                <li class="project-item">
+                    <div class="project-content">
+                        <div>
+                            <p class="project-overline">Featured Project</p>
+                            <h3 class="project-title"><a href="#">Autonomous Navigation AI</a></h3>
+                            <div class="project-description">
+                                <p>An indoor navigation stack for mobile robots utilizing reinforcement learning for path planning and multi-sensor fusion (LIDAR, IMU, Cameras) for robust localization.</p>
+                            </div>
+                            <ul class="project-tech-list">
+                                <li>C++</li>
+                                <li>ROS</li>
+                                <li>LIDAR</li>
+                                <li>PyTorch</li>
+                            </ul>
+                            <div class="project-links">
+                                <a href="#" aria-label="GitHub Link" target="_blank" rel="noopener noreferrer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><title>GitHub</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-image">
+                        <a href="#">
+                            <img src="https://i.imgur.com/sT4b6r1.gif" alt="Autonomous Navigation AI GIF">
+                        </a>
+                    </div>
+                </li>
+
+            </ul>
+        </section>
+        
+        <section id="contact">
+            <h2 class="contact-title">Get In Touch</h2>
+            <p class="contact-text">
+                I'm currently open to new opportunities and my inbox is always open.
+                Whether you have a question or just want to say hi, I’ll get back to you!
+            </p>
+            <a href="mailto:skadoosh2710@gmail.com" class="button-primary">Say Hello</a>
+        </section>
+    </main>
+
+    <footer>
+        <div>
+            Designed & Built by Soroush Etemad
         </div>
-    </section>
-
-    <!-- ABOUT SECTION -->
-    <section id="about" class="section">
-        <div class="container">
-            <div class="page-header">
-                <!-- <img src="images/profile.jpg" alt="Soroush Etemad" style="width: 200px; height: 200px; border-radius: 50%; box-shadow: 0 0 20px rgba(30, 144, 255, 0.3); margin-bottom: 1rem; object-fit: cover; border: 2px solid #1e90ff;" /> -->
-                <h1 class="page-title">ABOUT</h1>
-                <p class="page-subtitle">Robotics & AI Engineer</p>
-            </div>
-
-            <div class="content-grid">
-                <div class="content-card">
-                    <h3 class="card-title">Background</h3>
-                    <div class="card-content">
-                        Robotics Systems Engineer specializing in advanced technology and autonomous systems. With over 8 years of experience in cutting-edge robotics research, I focus on bridging the gap between human creativity and machine intelligence through innovative engineering solutions.
-                    </div>
-                </div>
-
-                <div class="content-card">
-                    <h3 class="card-title">Professional Focus</h3>
-                    <div class="card-content">
-                        My work centers on developing next-generation robotics and intelligent systems that enable seamless human-machine collaboration. I work extensively with control systems, machine learning algorithms, and real-time platforms to create intuitive and robust robotic solutions.
-                    </div>
-                </div>
-
-                <div class="content-card">
-                    <h3 class="card-title">Philosophy</h3>
-                    <div class="card-content">
-                        I believe the future of robotics lies not in replacing human capabilities, but in augmenting them. My work aims to create symbiotic relationships between humans and machines, where technology amplifies human potential rather than substituting it.
-                    </div>
-                </div>
-            </div>
-
-            <div class="skills-grid">
-                <div class="skill-item">
-                    <div class="skill-name">Robotics</div>
-                    <div>Autonomous Systems, Control Theory</div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name">Machine Learning</div>
-                    <div>Deep Learning, Reinforcement Learning</div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name">Systems Engineering</div>
-                    <div>Complex Systems, Integration</div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name">Programming</div>
-                    <div>Python, C++, ROS, MATLAB</div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name">Hardware</div>
-                    <div>Embedded Systems, Signal Processing</div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name">Research</div>
-                    <div>Data Analysis, Scientific Writing</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- EXPERIENCE SECTION -->
-    <section id="experience" class="section">
-        <div class="container">
-            <div class="page-header">
-                <h1 class="page-title">EXPERIENCE</h1>
-                <p class="page-subtitle">Professional Journey</p>
-            </div>
-
-            <div class="content-grid">
-                <div class="content-card">
-                    <h3 class="card-title">Senior Robotics Engineer</h3>
-                    <div class="card-subtitle">Neural Dynamics Lab | 2020 - Present</div>
-                    <div class="card-content">
-                        Lead development of next-generation neural interface systems for robotic control. Designed and implemented brain-computer interface protocols that achieved 95% accuracy in intention recognition. Managed a team of 6 engineers and researchers, overseeing projects with budgets exceeding $2M.
-                    </div>
-                </div>
-
-                <div class="content-card">
-                    <h3 class="card-title">Research Scientist</h3>
-                    <div class="card-subtitle">Advanced Robotics Institute | 2018 - 2020</div>
-                    <div class="card-content">
-                        Conducted groundbreaking research in human-robot interaction and autonomous navigation systems. Published 12 peer-reviewed papers and secured $1.5M in research funding. Developed novel algorithms for real-time sensor fusion and decision-making in complex environments.
-                    </div>
-                </div>
-
-                <div class="content-card">
-                    <h3 class="card-title">Robotics Engineer</h3>
-                    <div class="card-subtitle">TechnoBot Solutions | 2016 - 2018</div>
-                    <div class="card-content">
-                        Designed and programmed autonomous mobile robots for industrial applications. Implemented machine learning algorithms for object recognition and path planning. Collaborated with cross-functional teams to deliver robotic solutions for manufacturing and logistics.
-                    </div>
-                </div>
-
-                <div class="content-card">
-                    <h3 class="card-title">Graduate Research Assistant</h3>
-                    <div class="card-subtitle">MIT Robotics Lab | 2014 - 2016</div>
-                    <div class="card-content">
-                        Conducted research on neural-inspired control algorithms for robotic systems. Developed novel approaches to sensorimotor learning and adaptive control. Contributed to 8 publications and presented research at international conferences.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PROJECTS SECTION -->
-    <section id="projects" class="section">
-        <div class="container">
-            <div class="page-header">
-                <h1 class="page-title">PROJECTS</h1>
-                <p class="page-subtitle">Innovation in Action</p>
-            </div>
-
-            <div class="projects-grid">
-                <div class="project-card">
-                    <h3 class="project-title">NeuroLink Control System</h3>
-                    <div class="card-content">
-                        Revolutionary brain-computer interface that enables direct neural control of robotic prosthetics. Achieved breakthrough 98% accuracy in motor intention decoding using advanced deep learning architectures.
-                    </div>
-                    <div class="project-tech">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">TensorFlow</span>
-                        <span class="tech-tag">EEG Processing</span>
-                        <span class="tech-tag">Real-time Systems</span>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <h3 class="project-title">Autonomous Navigation AI</h3>
-                    <div class="card-content">
-                        Developed an AI system for autonomous robot navigation in complex indoor environments. Uses multi-sensor fusion and reinforcement learning for optimal path planning and obstacle avoidance.
-                    </div>
-                    <div class="project-tech">
-                        <span class="tech-tag">C++</span>
-                        <span class="tech-tag">ROS</span>
-                        <span class="tech-tag">LIDAR</span>
-                        <span class="tech-tag">Computer Vision</span>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <h3 class="project-title">Swarm Intelligence Platform</h3>
-                    <div class="card-content">
-                        Created a distributed control system for coordinating multiple autonomous robots in collaborative tasks. Implements bio-inspired algorithms for emergent collective behavior.
-                    </div>
-                    <div class="project-tech">
-                        <span class="tech-tag">Multi-Agent Systems</span>
-                        <span class="tech-tag">Distributed Computing</span>
-                        <span class="tech-tag">Swarm Robotics</span>
-                        <span class="tech-tag">Network Protocols</span>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <h3 class="project-title">Haptic Feedback Interface</h3>
-                    <div class="card-content">
-                        Advanced haptic system that provides tactile feedback for robotic manipulation tasks. Enables operators to "feel" what robots touch, improving precision in delicate operations.
-                    </div>
-                    <div class="project-tech">
-                        <span class="tech-tag">Embedded Systems</span>
-                        <span class="tech-tag">Signal Processing</span>
-                        <span class="tech-tag">Force Sensors</span>
-                        <span class="tech-tag">Real-time Control</span>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <h3 class="project-title">Adaptive Learning Robot</h3>
-                    <div class="card-content">
-                        Self-learning robotic system that adapts to new environments and tasks without human intervention. Uses meta-learning and transfer learning for rapid skill acquisition.
-                    </div>
-                    <div class="project-tech">
-                        <span class="tech-tag">Meta-Learning</span>
-                        <span class="tech-tag">Transfer Learning</span>
-                        <span class="tech-tag">Neural Networks</span>
-                        <span class="tech-tag">Adaptive Control</span>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <h3 class="project-title">Human-Robot Collaboration Suite</h3>
-                    <div class="card-content">
-                        Comprehensive framework for safe and intuitive human-robot collaboration in manufacturing environments. Features predictive collision avoidance and gesture recognition.
-                    </div>
-                    <div class="project-tech">
-                        <span class="tech-tag">Safety Systems</span>
-                        <span class="tech-tag">Gesture Recognition</span>
-                        <span class="tech-tag">Industrial Robotics</span>
-                        <span class="tech-tag">Human Factors</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- BLOG SECTION -->
-    <section id="blog" class="section">
-        <div class="container">
-            <div class="page-header">
-                <h1 class="page-title">BLOG</h1>
-                <p class="page-subtitle">Thoughts & Insights</p>
-            </div>
-
-            <div class="blog-post">
-                <h3 class="blog-title">The Future of Neural Interfaces in Robotics</h3>
-                <div class="blog-date">March 15, 2024</div>
-                <div class="blog-excerpt">
-                    As we stand on the brink of a new era in human-machine interaction, neural interfaces are poised to revolutionize how we control and collaborate with robotic systems. This post explores the latest breakthroughs in brain-computer interface technology and their implications for the future of robotics...
-                </div>
-            </div>
-
-            <div class="blog-post">
-                <h3 class="blog-title">Swarm Intelligence: Lessons from Nature</h3>
-                <div class="blog-date">February 28, 2024</div>
-                <div class="blog-excerpt">
-                    Nature has perfected the art of collective intelligence through millions of years of evolution. From ant colonies to bird flocks, biological systems demonstrate remarkable coordination without centralized control. In this article, I examine how these principles can be applied to multi-robot systems...
-                </div>
-            </div>
-
-            <div class="blog-post">
-                <h3 class="blog-title">Ethical Considerations in Autonomous Robotics</h3>
-                <div class="blog-date">February 12, 2024</div>
-                <div class="blog-excerpt">
-                    As autonomous robots become increasingly capable and prevalent in our society, we must carefully consider the ethical implications of their deployment. This post discusses key ethical challenges including accountability, transparency, and the impact on human employment...
-                </div>
-            </div>
-
-            <div class="blog-post">
-                <h3 class="blog-title">Deep Learning Architectures for Real-time Control</h3>
-                <div class="blog-date">January 30, 2024</div>
-                <div class="blog-excerpt">
-                    Real-time control applications in robotics demand neural networks that can process information and make decisions within strict timing constraints. This technical deep-dive explores optimized architectures and training techniques that enable deep learning models to meet real-time requirements...
-                </div>
-            </div>
-
-            <div class="blog-post">
-                <h3 class="blog-title">Building Trust in Human-Robot Teams</h3>
-                <div class="blog-date">January 18, 2024</div>
-                <div class="blog-excerpt">
-                    Trust is a fundamental component of effective human-robot collaboration. Through my research and practical experience, I've identified key factors that influence trust formation between humans and robotic systems. This post outlines strategies for designing trustworthy robotic partners...
-                </div>
-            </div>
-
-            <div class="blog-post">
-                <h3 class="blog-title">The Science of Haptic Feedback</h3>
-                <div class="blog-date">December 20, 2023</div>
-                <div class="blog-excerpt">
-                    Haptic technology bridges the gap between the digital and physical worlds, allowing us to "feel" virtual objects and remote environments. In this article, I explore the neuroscience behind touch perception and how we can leverage this understanding to create more immersive robotic interfaces...
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTACT SECTION -->
-    <section id="contact" class="section">
-        <div class="container">
-            <div class="page-header">
-                <h1 class="page-title">CONTACT</h1>
-                <p class="page-subtitle">Let's Connect</p>
-            </div>
-
-            <div class="contact-info">
-                <div class="contact-item">
-                    <div class="contact-label">Email</div>
-                    <div>skadoosh2710@gmail.com</div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-label">Phone</div>
-                    <div>+1 (555) 123-4567</div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-label">Location</div>
-                    <div>San Francisco, CA</div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-label">LinkedIn</div>
-                    <div>linkedin.com/in/soroush-etemad</div>
-                </div>
-            </div>
-
-            <form class="contact-form">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required />
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required />
-                </div>
-
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required />
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="6" required></textarea>
-                </div>
-
-                <button type="submit">TRANSMIT MESSAGE</button>
-            </form>
-        </div>
-    </section>
+    </footer>
 
     <script>
         /* --------------------------- */
-        /*    MOBILE MENU TOGGLE       */
+        /* CUSTOM CURSOR LOGIC    */
         /* --------------------------- */
-        const hamburger = document.getElementById('hamburger');
-        const navMenu = document.getElementById('nav-menu');
+        const cursor = document.getElementById('cursor');
+        if (cursor) {
+            document.addEventListener('mousemove', (e) => {
+                if (window.innerWidth > 768) { // Only show cursor on desktop
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                }
+            });
+        }
 
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
+        /* --------------------------- */
+        /* PRELOADER LOGIC             */
+        /* --------------------------- */
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+            }, 500); // Optional delay
         });
 
-        // Close mobile menu when clicking on nav links
-        document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-        }));
+        /* --------------------------- */
+        /* MOBILE NAV & SCROLL LOGIC   */
+        /* --------------------------- */
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const navMenu = document.getElementById('nav-menu');
+        const navLinks = document.querySelectorAll('#nav-menu a');
+        const body = document.body;
 
-        /* --------------------------- */
-        /*    SMOOTH SCROLL NAVIGATION */
-        /* --------------------------- */
+        hamburgerButton.addEventListener('click', () => {
+            hamburgerButton.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            body.classList.toggle('blur');
+        });
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (hamburgerButton.classList.contains('active')) {
+                    hamburgerButton.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    body.classList.remove('blur');
+                }
+            });
+        });
+
         function scrollToSection(sectionId) {
             const section = document.getElementById(sectionId);
             if (section) {
-                section.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-
-            // Update active nav link
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach((link) => link.classList.remove('active'));
-            
-            // Find the correct nav link to activate
-            const targetLink = document.querySelector(`[onclick="scrollToSection('${sectionId}')"]`);
-            if (targetLink) {
-                targetLink.classList.add('active');
-            }
-
-            // Close mobile menu when navigating
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
         }
 
         /* --------------------------- */
-        /*    SCROLL SPY FOR NAV       */
+        /* EXPANDABLE BLOG POSTS       */
         /* --------------------------- */
-        function updateActiveNavOnScroll() {
-            const sections = document.querySelectorAll('.section');
-            const navLinks = document.querySelectorAll('.nav-link');
-            
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (window.scrollY >= (sectionTop - 200)) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('onclick').includes(current)) {
-                    link.classList.add('active');
-                }
-            });
+        function toggleBlogItem(blogItem) {
+            const button = blogItem.querySelector('.blog-toggle-button');
+            blogItem.classList.toggle('expanded');
+            button.textContent = blogItem.classList.contains('expanded') ? '−' : '+';
         }
 
-        window.addEventListener('scroll', updateActiveNavOnScroll);
-
-        /* --------------------------- */
-        /*      CUSTOM CURSOR LOGIC    */
-        /* --------------------------- */
-        const cursor = document.getElementById('cursor');
-        const mouse = { x: null, y: null };
-        
-        document.addEventListener('mousemove', (e) => {
-            if (window.innerWidth > 768) { // Only show cursor on desktop
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
-                mouse.x = e.clientX;
-                mouse.y = e.clientY;
-            }
+        document.querySelectorAll('.blog-header').forEach(header => {
+            header.addEventListener('click', () => {
+                toggleBlogItem(header.closest('.blog-item'));
+            });
         });
 
         /* --------------------------- */
-        /*    NEURAL NETWORK CANVAS     */
+        /* EXPANDABLE PROJECTS         */
         /* --------------------------- */
+        document.querySelectorAll('.project-toggle-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const projectItem = button.closest('.project-item');
+                projectItem.classList.toggle('expanded');
+                if (projectItem.classList.contains('expanded')) {
+                    button.textContent = '−';
+                } else {
+                    button.textContent = '+';
+                }
+            });
+        });
+
+        /* ---------------------------------- */
+        /* CANVAS & SCROLL-BASED VISIBILITY */
+        /* ---------------------------------- */
         const canvas = document.getElementById('neuralCanvas');
+        const homeSection = document.getElementById('home');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // If home section is intersecting (visible), show canvas. Otherwise, hide it.
+                if (entry.isIntersecting) {
+                    canvas.classList.remove('hidden');
+                } else {
+                    canvas.classList.add('hidden');
+                }
+            });
+        }, { threshold: 0.1 }); // Trigger when 10% of the hero is visible/hidden
+
+        observer.observe(homeSection);
+
+        
+        /* --------------------------- */
+        /* NEURAL NETWORK CANVAS       */
+        /* --------------------------- */
         const ctx = canvas.getContext('2d');
-        let nodes = [];
-        let connections = [];
-        let firingNodes = new Set();
-        let activePulses = [];
+        let nodes = [], connections = [], activePulses = [];
 
-        // Enhanced Node class with firing capabilities
         class Node {
-            constructor(x, y, isNewNode = false) {
-                this.x = x;
-                this.y = y;
-                this.baseRadius = Math.random() * 3 + 2;
-                this.radius = this.baseRadius;
-                this.glow = Math.random();
-                this.isFiring = false;
-                this.fireIntensity = 0;
-                this.connections = [];
-                this.activationThreshold = 0.7;
-                this.charge = 0;
-                this.isNewNode = isNewNode;
-                this.birthTime = performance.now();
-                this.birthAnimation = isNewNode ? 1 : 0;
+            constructor(x, y, layer) {
+                this.x = x; this.y = y; this.layer = layer;
+                this.baseRadius = Math.random() * 2 + 2;
+                this.isFiring = false; this.fireIntensity = 0;
+                this.charge = 0; this.activationThreshold = 0.7;
             }
-
             fire() {
-                if (!this.isFiring) {
-                    this.isFiring = true;
-                    this.fireIntensity = 1;
-                    firingNodes.add(this);
-                    
-                    // Create pulses to connected nodes
-                    setTimeout(() => {
-                        this.connections.forEach(connection => {
-                            const targetNode = connection.a === this ? connection.b : connection.a;
-                            activePulses.push(new NeuralPulse(this, targetNode, connection));
-                        });
-                    }, 100);
-                }
+                if (this.isFiring) return;
+                this.isFiring = true; this.fireIntensity = 1;
+                setTimeout(() => {
+                    connections.forEach(conn => {
+                        if (conn.a === this && conn.b.layer > this.layer) {
+                           activePulses.push(new NeuralPulse(conn.a, conn.b));
+                        }
+                    });
+                }, 50);
             }
-
             update() {
-                this.glow += 0.004;
-                if (this.glow > 1) this.glow = 0;
-
-                // Handle birth animation
-                if (this.isNewNode && this.birthAnimation > 0) {
-                    this.birthAnimation -= 0.02;
-                    if (this.birthAnimation <= 0) {
-                        this.isNewNode = false;
-                        this.birthAnimation = 0;
-                    }
-                }
-
                 if (this.isFiring) {
                     this.fireIntensity -= 0.02;
-                    if (this.fireIntensity <= 0) {
-                        this.isFiring = false;
-                        this.fireIntensity = 0;
-                        firingNodes.delete(this);
-                    }
+                    if (this.fireIntensity <= 0) this.isFiring = false;
                 }
-
-                // Decay charge over time
                 this.charge *= 0.95;
-                
-                // Auto-fire if charge exceeds threshold
                 if (this.charge > this.activationThreshold && !this.isFiring) {
-                    this.fire();
-                    this.charge = 0;
+                    this.fire(); this.charge = 0;
                 }
             }
-
             draw() {
-                let hoverFactor = 0;
-                if (mouse.x !== null && mouse.y !== null && window.innerWidth > 768) {
-                    const dxm = this.x - mouse.x;
-                    const dym = this.y - mouse.y;
-                    const distMouse = Math.sqrt(dxm * dxm + dym * dym);
-                    if (distMouse < 80) {
-                        hoverFactor = (80 - distMouse) / 80;
-                    }
+                let alpha = 0.7, r = this.baseRadius, color;
+                switch(this.layer) {
+                    case 0: color = getComputedStyle(document.documentElement).getPropertyValue('--input-color'); break;
+                    case 2: color = getComputedStyle(document.documentElement).getPropertyValue('--output-color'); break;
+                    default: color = getComputedStyle(document.documentElement).getPropertyValue('--light-slate'); break;
                 }
-
-                const baseIntensity = 0.5 + 0.5 * Math.sin(this.glow * Math.PI * 2);
-                let intensity = Math.min(1, baseIntensity + hoverFactor * 0.7);
-                
-                // Enhanced intensity when firing
                 if (this.isFiring) {
-                    intensity = Math.max(intensity, this.fireIntensity);
+                    alpha = Math.max(alpha, this.fireIntensity);
+                    r = this.baseRadius * (1 + this.fireIntensity);
+                    color = getComputedStyle(document.documentElement).getPropertyValue('--spark-yellow');
                 }
-
-                const alpha = 0.3 + 0.7 * intensity;
-                let r = this.baseRadius * (1 + 0.5 * intensity + (this.isFiring ? this.fireIntensity * 0.8 : 0));
-
-                // Birth animation scaling
-                if (this.isNewNode) {
-                    const birthScale = 1 - this.birthAnimation + Math.sin((1 - this.birthAnimation) * Math.PI) * 0.5;
-                    r *= birthScale;
-                }
-
-                // Color changes when firing or newly created
-                let color;
-                if (this.isNewNode) {
-                    color = `rgba(0, 255, 127, ${alpha})`;  // Spring green for new nodes
-                } else if (this.isFiring) {
-                    color = `rgba(255, 215, 0, ${alpha})`;  // Gold when firing
-                } else {
-                    color = `rgba(30, 144, 255, ${alpha})`;  // Default blue
-                }
-
+                const tempDiv = document.createElement('div');
+                tempDiv.style.color = color;
+                document.body.appendChild(tempDiv);
+                const rgbColor = window.getComputedStyle(tempDiv).color;
+                document.body.removeChild(tempDiv);
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
-                ctx.fillStyle = color;
+                ctx.fillStyle = rgbColor.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
                 ctx.fill();
-
-                // Add glow effect when firing or new
-                if (this.isFiring || this.isNewNode) {
+                if (this.isFiring) {
+                    const glowColor = rgbColor.replace(')', `, ${this.fireIntensity * 0.2})`).replace('rgb', 'rgba');
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, r * 2, 0, Math.PI * 2);
-                    const glowAlpha = this.isFiring ? this.fireIntensity * 0.2 : (1 - this.birthAnimation) * 0.3;
-                    ctx.fillStyle = this.isNewNode ? 
-                        `rgba(0, 255, 127, ${glowAlpha})` : 
-                        `rgba(255, 215, 0, ${glowAlpha})`;
+                    ctx.arc(this.x, this.y, r * 2.5, 0, Math.PI * 2);
+                    ctx.fillStyle = glowColor;
                     ctx.fill();
                 }
             }
         }
-
-        // Enhanced Connection class
         class Connection {
-            constructor(a, b, isNewConnection = false) {
-                this.a = a;
-                this.b = b;
-                this.pulse = Math.random();
-                this.isActive = false;
-                this.activeIntensity = 0;
-                this.isNewConnection = isNewConnection;
-                this.birthTime = performance.now();
-                this.birthAnimation = isNewConnection ? 1 : 0;
-                
-                // Add this connection to both nodes
-                a.connections.push(this);
-                b.connections.push(this);
-            }
-
-            activate() {
-                this.isActive = true;
-                this.activeIntensity = 1;
-            }
-
-            update() {
-                this.pulse += 0.0015;
-                if (this.pulse > 1) this.pulse = 0;
-
-                // Handle birth animation
-                if (this.isNewConnection && this.birthAnimation > 0) {
-                    this.birthAnimation -= 0.015;
-                    if (this.birthAnimation <= 0) {
-                        this.isNewConnection = false;
-                        this.birthAnimation = 0;
-                    }
-                }
-
-                if (this.isActive) {
-                    this.activeIntensity -= 0.03;
-                    if (this.activeIntensity <= 0) {
-                        this.isActive = false;
-                        this.activeIntensity = 0;
-                    }
-                }
-            }
-
+            constructor(a, b) { this.a = a; this.b = b; this.activeIntensity = 0; }
+            update() { if (this.activeIntensity > 0) this.activeIntensity -= 0.03; }
             draw() {
-                const mx = (this.a.x + this.b.x) / 2;
-                const my = (this.a.y + this.b.y) / 2;
-                let hoverLine = 0;
-                
-                if (mouse.x !== null && mouse.y !== null && window.innerWidth > 768) {
-                    const dxm = mx - mouse.x;
-                    const dym = my - mouse.y;
-                    const distMid = Math.sqrt(dxm * dxm + dym * dym);
-                    if (distMid < 100) {
-                        hoverLine = (100 - distMid) / 100;
-                    }
-                }
-
-                const phase = this.pulse + performance.now() * 0.0008;
-                let baseAlpha = 0.2 + 0.4 * (0.5 + 0.5 * Math.sin(phase * Math.PI * 2));
-                
-                // Enhanced when active
-                if (this.isActive) {
-                    baseAlpha = Math.max(baseAlpha, this.activeIntensity * 0.8);
-                }
-
-                // Birth animation effect
-                if (this.isNewConnection) {
-                    baseAlpha *= (1 - this.birthAnimation * 0.5);
-                }
-                
-                const alpha = Math.min(1, baseAlpha + hoverLine * 0.5);
-
+                let alpha = 0.15 + this.activeIntensity * 0.6;
+                let color = this.activeIntensity > 0 ? 'var(--spark-yellow)' : 'var(--slate)';
+                const tempDiv = document.createElement('div');
+                tempDiv.style.color = getComputedStyle(document.documentElement).getPropertyValue(color.substring(4, color.length-1));
+                document.body.appendChild(tempDiv);
+                const rgbColor = window.getComputedStyle(tempDiv).color;
+                document.body.removeChild(tempDiv);
                 ctx.beginPath();
                 ctx.moveTo(this.a.x, this.a.y);
                 ctx.lineTo(this.b.x, this.b.y);
-                
-                // Color changes when active or new
-                let color;
-                if (this.isNewConnection) {
-                    color = `rgba(0, 255, 127, ${alpha})`;  // Spring green for new connections
-                } else if (this.isActive) {
-                    color = `rgba(255, 215, 0, ${alpha})`;  // Gold when active
-                } else {
-                    color = `rgba(30, 144, 255, ${alpha})`;  // Default blue
-                }
-                    
-                ctx.strokeStyle = color;
-                ctx.lineWidth = 1 + hoverLine * 1 + (this.isActive ? this.activeIntensity * 2 : 0) + 
-                               (this.isNewConnection ? (1 - this.birthAnimation) * 1.5 : 0);
+                ctx.strokeStyle = rgbColor.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+                ctx.lineWidth = 1 + this.activeIntensity;
                 ctx.stroke();
             }
         }
-
-        // Neural pulse class for traveling signals
         class NeuralPulse {
-            constructor(startNode, endNode, connection) {
-                this.startNode = startNode;
-                this.endNode = endNode;
-                this.connection = connection;
-                this.progress = 0;
-                this.speed = 0.02 + Math.random() * 0.03;
-                this.x = startNode.x;
-                this.y = startNode.y;
-                this.active = true;
+            constructor(startNode, endNode) {
+                this.startNode = startNode; this.endNode = endNode;
+                this.progress = 0; this.speed = 0.025; this.active = true;
             }
-
             update() {
                 if (!this.active) return;
-
                 this.progress += this.speed;
-                
-                // Interpolate position
-                this.x = this.startNode.x + (this.endNode.x - this.startNode.x) * this.progress;
-                this.y = this.startNode.y + (this.endNode.y - this.startNode.y) * this.progress;
-
-                // Activate connection while pulse travels
-                this.connection.activate();
-
-                if (this.progress >= 1) {
-                    // Pulse reached target
-                    this.endNode.charge += 0.3 + Math.random() * 0.4;
-                    this.active = false;
-                }
+                const connection = connections.find(c => c.a === this.startNode && c.b === this.endNode);
+                if(connection) connection.activeIntensity = Math.max(connection.activeIntensity, 1 - this.progress);
+                if (this.progress >= 1) { this.endNode.charge += 0.5; this.active = false; }
             }
-
             draw() {
                 if (!this.active) return;
-
-                const intensity = 1 - Math.abs(this.progress - 0.5) * 2; // Peak at middle
-                const alpha = intensity * 0.8;
-                const radius = 3 + intensity * 2;
-
+                const x = this.startNode.x + (this.endNode.x - this.startNode.x) * this.progress;
+                const y = this.startNode.y + (this.endNode.y - this.startNode.y) * this.progress;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-                ctx.fill();
-
-                // Add trail effect
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, radius * 1.5, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 215, 0, ${alpha * 0.3})`;
+                ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--white');
                 ctx.fill();
             }
         }
 
-        // Click ripple effect
-        function createClickRipple(x, y) {
-            const ripple = document.createElement('div');
-            ripple.className = 'click-ripple';
-            ripple.style.left = (x - 100) + 'px';
-            ripple.style.top = (y - 100) + 'px';
-            document.body.appendChild(ripple);
-
-            setTimeout(() => {
-                document.body.removeChild(ripple);
-            }, 1000);
+        function triggerRandomActivity() {
+            if (Math.random() < 0.03) {
+                const inputNodes = nodes.filter(n => n.layer === 0);
+                if (inputNodes.length > 0) {
+                    inputNodes[Math.floor(Math.random() * inputNodes.length)]?.fire();
+                }
+            }
+        }
+        function drawLayerLabels() {
+            ctx.font = '12px "Roboto Mono", monospace';
+            ctx.fillStyle = 'rgba(136, 146, 176, 0.4)';
+            ctx.textAlign = 'center';
+            ctx.fillText('Input Layer', canvas.width * 0.1, 30);
+            ctx.fillText('Hidden Layer', canvas.width * 0.5, 30);
+            ctx.fillText('Output Layer', canvas.width * 0.9, 30);
         }
 
-        // Enhanced click handler for creating new nodes
         document.addEventListener('click', (e) => {
+            if (e.target.closest('a, button')) return;
             const rect = canvas.getBoundingClientRect();
+            if(rect.top > e.clientY || rect.left > e.clientX || rect.bottom < e.clientY || rect.right < e.clientX) return;
+
             const clickX = e.clientX - rect.left;
             const clickY = e.clientY - rect.top;
-            
-            // Create visual ripple effect
-            createClickRipple(e.clientX, e.clientY);
-            
-            // Create new node at click position
-            const newNode = new Node(clickX, clickY, true);
+            let layer = (clickX < canvas.width * 0.2) ? 0 : (clickX > canvas.width * 0.8) ? 2 : 1;
+            const newNode = new Node(clickX, clickY, layer);
             nodes.push(newNode);
 
-            // Find nearest neighbors to connect
-            let distances = nodes.map(node => {
-                const dx = node.x - clickX;
-                const dy = node.y - clickY;
-                return {node: node, dist: dx*dx + dy*dy};
-            });
-            distances.sort((a, b) => a.dist - b.dist);
-
-            // Connect to 2-3 nearest nodes (excluding itself)
-            let connectionsToAdd = 0;
-            const maxConnections = window.innerWidth <= 768 ? 2 : 3;
-            for (let i = 1; i < distances.length && connectionsToAdd < maxConnections; i++) {
-                const targetNode = distances[i].node;
-                // Avoid duplicate connections
-                const existingConnection = connections.find(conn => 
-                    (conn.a === newNode && conn.b === targetNode) ||
-                    (conn.b === newNode && conn.a === targetNode)
-                );
-                if (!existingConnection) {
-                    connections.push(new Connection(newNode, targetNode, true));
-                    connectionsToAdd++;
+            nodes.forEach(node => {
+                if(node !== newNode && node.layer < newNode.layer) {
+                    connections.push(new Connection(node, newNode));
+                } else if (node !== newNode && node.layer > newNode.layer) {
+                    connections.push(new Connection(newNode, node));
                 }
-            }
-
-            // Fire the new node to show activation
-            setTimeout(() => {
-                newNode.fire();
-            }, 300);
+            });
+            setTimeout(() => newNode.fire(), 100);
         });
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initNetwork();
-        }
-
         function initNetwork() {
-            nodes = [];
-            connections = [];
-            activePulses = [];
-            firingNodes.clear();
+            nodes = [], connections = [], activePulses = [];
+            const layerCounts = [5, 8, 4]; // Input, Hidden, Output
+            const layerXPositions = [0.1, 0.5, 0.9];
             
-            // Adaptive node count based on screen size
-            const baseCount = Math.floor((canvas.width * canvas.height) / 80000);
-            const mobileReduction = window.innerWidth <= 768 ? 0.6 : 1;
-            const count = Math.max(20, Math.floor(baseCount * mobileReduction));
-            
-            // Create nodes
-            for (let i = 0; i < count; i++) {
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * canvas.height;
-                nodes.push(new Node(x, y));
+            for(let l = 0; l < layerCounts.length; l++) {
+                const numNodes = layerCounts[l];
+                for (let i = 0; i < numNodes; i++) {
+                    const x = canvas.width * layerXPositions[l] + (Math.random() - 0.5) * 50;
+                    const y = canvas.height * (i + 1) / (numNodes + 1);
+                    nodes.push(new Node(x, y, l));
+                }
             }
             
-            // Create connections (each node connects to 2-3 nearest neighbors)
-            for (let i = 0; i < nodes.length; i++) {
-                let nearest = [];
-                for (let j = 0; j < nodes.length; j++) {
-                    if (i === j) continue;
-                    const dx = nodes[i].x - nodes[j].x;
-                    const dy = nodes[i].y - nodes[j].y;
-                    const d = dx * dx + dy * dy;
-                    nearest.push({ idx: j, dist: d });
-                }
-                nearest.sort((a, b) => a.dist - b.dist);
-                
-                const connectionCount = window.innerWidth <= 768 ? 2 : 3;
-                for (let k = 0; k < connectionCount && k < nearest.length; k++) {
-                    // Avoid duplicate connections
-                    const targetNode = nodes[nearest[k].idx];
-                    const existingConnection = connections.find(conn => 
-                        (conn.a === nodes[i] && conn.b === targetNode) ||
-                        (conn.b === nodes[i] && conn.a === targetNode)
-                    );
-                    
-                    if (!existingConnection) {
-                        connections.push(new Connection(nodes[i], targetNode));
+            for(let i = 0; i < nodes.length; i++) {
+                for(let j = 0; j < nodes.length; j++) {
+                    if (nodes[i].layer === nodes[j].layer - 1) {
+                        connections.push(new Connection(nodes[i], nodes[j]));
                     }
                 }
             }
         }
 
         function animateNetwork() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Trigger random activity
-            triggerRandomActivity();
-            
-            // Update and draw connections
-            connections.forEach((conn) => {
-                conn.update();
-                conn.draw();
-            });
-            
-            // Update and draw nodes
-            nodes.forEach((node) => {
-                node.update();
-                node.draw();
-            });
-            
-            // Update and draw neural pulses
-            activePulses = activePulses.filter(pulse => {
-                pulse.update();
-                pulse.draw();
-                return pulse.active;
-            });
-            
             requestAnimationFrame(animateNetwork);
+            if (canvas.classList.contains('hidden')) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawLayerLabels();
+            triggerRandomActivity();
+            connections.forEach(c => { c.update(); c.draw(); });
+            nodes.forEach(n => { n.update(); n.draw(); });
+            activePulses = activePulses.filter(p => { p.update(); p.draw(); return p.active; });
         }
-
-        // Random neural activity for ambient effect
-        function triggerRandomActivity() {
-            if (Math.random() < 0.001) { // 2% chance per frame
-                const randomNode = nodes[Math.floor(Math.random() * nodes.length)];
-                if (randomNode && !randomNode.isFiring) {
-                    randomNode.fire();
-                }
-            }
-        }
-
-        // Event listeners
+        
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initNetwork(); }
         window.addEventListener('resize', resizeCanvas);
-        window.addEventListener('load', () => {
-            resizeCanvas();
-            animateNetwork();
-        });
-
-        /* --------------------------- */
-        /*    CONTACT FORM HANDLER     */
-        /* --------------------------- */
-        document.querySelector('.contact-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            
-            // Add some neural firing on form submission
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const randomNode = nodes[Math.floor(Math.random() * nodes.length)];
-                    if (randomNode) randomNode.fire();
-                }, i * 100);
-            }
-            
-            alert('Message transmitted successfully! I will respond within 24 hours.');
-            this.reset();
-        });
-        // Touch events for mobile - enhanced for node creation
-        document.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            const clickEvent = new MouseEvent('click', {
-                clientX: touch.clientX,
-                clientY: touch.clientY
-            });
-            document.dispatchEvent(clickEvent);
-        });
-
-        // Prevent context menu on long press for mobile
-        document.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-        });
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            resizeCanvas();
-            animateNetwork();
-        });
+        document.addEventListener('DOMContentLoaded', () => { resizeCanvas(); setTimeout(animateNetwork, 100); });
     </script>
 </body>
 </html>
