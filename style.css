@@ -14,7 +14,7 @@
     
     --accent-primary: #64ffdb;
     --accent-secondary: #FF64DA;
-    --neuron-fire-color: #ff000000;
+    --neuron-fire-color: var(--accent-secondary);
 
     --font-sans: 'Poppins', 'Montserrat', -apple-system, system-ui, sans-serif;
     --font-mono: 'Roboto Mono', monospace;
@@ -39,6 +39,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     /* Hide default cursor for custom one */
     cursor: none; 
+    font-size: 18px; /* Increased font size */
 }
 
 body.blur {

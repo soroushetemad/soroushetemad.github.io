@@ -28,9 +28,9 @@
         </button>
         <ul class="nav-menu" id="nav-menu">
             <li><a onclick="scrollToSection('about')" class="nav-link">About</a></li>
-            <li><a onclick="scrollToSection('blog')" class="nav-link">Blog</a></li>
             <li><a onclick="scrollToSection('experience')" class="nav-link">Experience</a></li>
-            <li><a onclick="scrollToSection('projects')" class="nav-link">Work</a></li>
+            <li><a onclick="scrollToSection('projects')" class="nav-link">Projects</a></li>
+            <li><a onclick="scrollToSection('blog')" class="nav-link">Blog</a></li>
             <li><a onclick="scrollToSection('contact')" class="nav-link">Contact</a></li>
             <li><a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="button-resume">Resume</a></li>
         </ul>
@@ -43,9 +43,6 @@
                     <p class="hero-intro">Hi, my name is</p>
                     <h1 class="hero-name">Soroush Etemad.</h1>
                     <h2 class="hero-tagline">I build intelligent systems.</h2>
-                    <p class="hero-description">
-                        I’m a Robotics and AI engineer specializing in building exceptional autonomous systems. My focus is on bridging the gap between human creativity and machine intelligence through innovative engineering.
-                    </p>
                     <a href="mailto:skadoosh2710@gmail.com" class="button-primary">Get In Touch</a>
                 </div>
                 <div class="hero-image-container">
@@ -59,7 +56,7 @@
             <div class="about-content">
                 <div class="about-text">
                     <p>
-                        Hello! I'm Soroush, a robotics systems engineer with a passion for creating intelligent systems that interact with the physical world. With over 8 years of experience, my journey has taken me from industrial automation to cutting-edge neural interfaces.
+                        Hello! I'm Soroush, a robotics systems engineer with a passion for creating intelligent systems that interact with the physical world. .
                     </p>
                     <p>
                         My work centers on developing the next generation of robotics and AI, focusing on control systems, machine learning, and creating robust, intuitive platforms. I believe the future lies not in replacing human capabilities, but in augmenting them.
@@ -81,7 +78,7 @@
                             <div class="edu-header">
                                 <img src="images/umd_logo.png" alt="University Logo" class="edu-logo">
                                 <div class="edu-header-text">
-                                   <h4 class="edu-degree">Master of Engineering in Robotics</h4>
+                                   <h4 class="edu-degree">M.Eng in Robotics</h4>
                                    <p class="edu-school">University of Maryland, College Park</p>
                                 </div>
                             </div>
@@ -92,7 +89,7 @@
                             <div class="edu-header">
                                 <img src="images/umd_logo.png" alt="University Logo" class="edu-logo">
                                  <div class="edu-header-text">
-                                    <h4 class="edu-degree">Bachelor of Science in Mechanical Engineering</h4>
+                                    <h4 class="edu-degree">B.S in Mechanical Engineering</h4>
                                     <p class="edu-school">University of Maryland, College Park</p>
                                 </div>
                             </div>
@@ -247,16 +244,78 @@
                 }
             });
         }
-
         /* --------------------------- */
         /* PRELOADER LOGIC             */
         /* --------------------------- */
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
+            const mainContent = document.querySelector('main');
+            const img = preloader.querySelector('.preloader-profile-pic');
+            
+            // Hide main content initially
+            mainContent.style.display = 'none';
+            
+            // Add loading spinner
+            const spinner = document.createElement('div');
+            spinner.classList.add('loading-spinner');
+            preloader.insertBefore(spinner, img);
+            
             setTimeout(() => {
                 preloader.classList.add('hidden');
-            }, 500); // Optional delay
+                // Show main content after preloader is hidden
+                mainContent.style.display = 'block';
+                mainContent.style.animation = 'fadeIn 0.5s ease-in';
+            }, 1200);
         });
+
+        // Add CSS for spinner and fade animations
+        const style = document.createElement('style');
+        style.textContent = `
+            .loading-spinner {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 3px solid transparent;
+            border-top: 3px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            }
+            
+            @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+            }
+            
+            @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+            }
+            
+            #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            }
+            
+            .preloader-profile-pic {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            }
+
+            #preloader.hidden {
+            display: none;
+            }
+        `;
+        document.head.appendChild(style);
 
         /* --------------------------- */
         /* MOBILE NAV & SCROLL LOGIC   */
@@ -446,7 +505,9 @@
         }
 
         function triggerRandomActivity() {
-            if (Math.random() < 0.03) {
+            // The animation runs at about 60fps.
+            // 0.5 fires per second (1 fire every 2 seconds) = 0.5/60 = ~0.0083
+            if (Math.random() < 0.00003) {
                 const inputNodes = nodes.filter(n => n.layer === 0);
                 if (inputNodes.length > 0) {
                     inputNodes[Math.floor(Math.random() * inputNodes.length)]?.fire();
