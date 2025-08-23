@@ -40,9 +40,9 @@
         <section id="home">
             <div class="hero-layout">
                 <div class="hero-content">
-                    <p class="hero-intro">Hi, my name is</p>
+                    <!-- <p class="hero-intro">Hi, my name is</p> -->
                     <h1 class="hero-name">Soroush Etemad.</h1>
-                    <h2 class="hero-tagline">I build intelligent systems.</h2>
+                    <h2 class="hero-tagline">AI & Robotics</h2>
                     <a href="mailto:setemad.dev@gmail.com" class="button-primary">Get In Touch</a>
                 </div>
                 <div class="hero-image-container">
@@ -55,21 +55,36 @@
             <h2 class="section-heading">About Me</h2>
             <div class="about-content">
                 <div class="about-text">
+                        <style>
+                            /* Improve spacing between paragraphs in About Me section */
+                            .about-text p {
+                                margin-bottom: 1.3em;
+                            }
+                            .about-text ul.skills-list {
+                                margin-top: 1.3em;
+                            }
+                        </style>
                     <p>
-                        Hello! I'm Soroush, a robotics systems engineer with a passion for creating intelligent systems that interact with the physical world. .
+                        <strong>Welcome to my page!</strong>
                     </p>
                     <p>
-                        My work centers on developing the next generation of robotics and AI, focusing on control systems, machine learning, and creating robust, intuitive platforms. I believe the future lies not in replacing human capabilities, but in augmenting them.
+                        I am an engineer with a background in robotics and mechanical engineering, specializing in AI and intelligent systems. I enjoy combining technical expertise with creativity to push the boundaries of innovation and explore opportunities at the intersection of technology and business.
                     </p>
-                    <p>Here are a few technologies I’ve been working with recently:</p>
-                    <ul class="skills-list">
+                    <p>
+                        My experience spans both hardware and software, with interests in computer vision, natural language processing, autonomy, artificial intelligence, and product design. I’m a quick learner, adaptable, and always eager to expand my skills while tackling complex challenges.
+                    </p>
+                    <p>
+                        Outside of work, I enjoy staying active through hiking and cycling, exploring new cities, and learning about emerging technologies and design trends. I also love working on personal projects that let me experiment with ideas at the intersection of robotics, AI, and creativity.
+                    </p>
+                    <!-- <p>Here are a few technologies I’ve been working with recently:</p> -->
+                    <!-- <ul class="skills-list">
                         <li>Python</li>
                         <li>C++</li>
                         <li>ROS2</li>
                         <li>TensorFlow</li>
                         <li>PyTorch </li>
                         <li>SQL</li>
-                    </ul>
+                    </ul> -->
                 </div>
                 <div class="education-section">
                     <h3 class="about-subheading">Education</h3>
@@ -101,12 +116,78 @@
             </div>
         </section>
 
-        <section id="experience">
+    <section id="experience">
+    <h2 class="section-heading">Where I've Worked</h2>
+
+    <div class="experience-item">
+        <h3>
+        <span class="exp-title">Systems Engineer</span>
+        <span class="exp-company">@ Booz Allen Hamilton</span>
+        </h3>
+        <p class="exp-dates">Jul 2023 – Present | McLean, VA</p>
+        <ul class="exp-duties">
+                <li><span class="custom-bullet"></span>Developed a self-hosted AI assistant for satellite missions using a RAG pipeline, enabling on-prem LLM inference with memory and reusable architecture adopted by client teams.</li>
+                <li><span class="custom-bullet"></span>Deployed microservices and optimized API/data flows, improving modularity and interoperability of mission platforms.</li>
+                <li><span class="custom-bullet"></span>Integrated ATAK and TAK Server into a drone startup’s FPV UAS platform, enabling real-time telemetry and video for warfighter situational awareness.</li>
+                <li><span class="custom-bullet"></span>Co-authored an Army robotics whitepaper; translated customer needs into system designs, guiding proposal strategy and market research.</li>
+        </ul>
+    </div>
+
+    <div class="experience-item">
+        <h3>
+        <span class="exp-title">Graduate Robotics Research Assistant</span>
+        <span class="exp-company">@ Perception Robotics Group</span>
+        </h3>
+        <p class="exp-dates">Dec 2024 – Present | College Park, MD</p>
+        <ul class="exp-duties">
+                <li><span class="custom-bullet"></span>Conducting research on tactile-based manipulation with behavior cloning under Prof. Yiannis Aloimonos.</li>
+                <li><span class="custom-bullet"></span>Developed a handheld data collection tool with custom grippers for imitation learning experiments.</li>
+                <li><span class="custom-bullet"></span>Collected multi-modal training data (tactile, visual, proprioceptive) and trained a diffusion policy network.</li>
+        </ul>
+    </div>
+
+    <div class="experience-item">
+        <h3>
+        <span class="exp-title">Mechanical Engineering Intern</span>
+        <span class="exp-company">@ U.S. Nuclear Regulatory Commission (NRC)</span>
+        </h3>
+        <p class="exp-dates">May 2022 – Aug 2022 | College Park, MD</p>
+        <ul class="exp-duties">
+                <li><span class="custom-bullet"></span>Simulated boric and pure water mixing in NuScale SMRs using Nek5000 CFD software to analyze safety-critical jet flows during accident scenarios.</li>
+                <li><span class="custom-bullet"></span>Produced detailed visualizations and presented results to the Code and Reactor Analysis Branch.</li>
+        </ul>
+    </div>
+    <style>
+    /* Custom bullet styling for experience duties, similar to education section */
+    .custom-bullets {
+        list-style: none;
+        padding-left: 0;
+    }
+    .custom-bullet {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 12px;
+        border-radius: 50%;
+        background: var(--accent-primary, #6C63FF);
+        vertical-align: middle;
+        box-shadow: 0 0 2px rgba(0,0,0,0.08);
+    }
+    .exp-duties li {
+        margin-bottom: 8px;
+        font-size: 1rem;
+        line-height: 1.6;
+        position: relative;
+    }
+    </style>
+    </section>
+
+        <!-- <section id="experience">
             <h2 class="section-heading">Where I've Worked</h2>
-            <div class="experience-item"><h3><span class="exp-title">Senior Robotics Engineer</span> <span class="exp-company">@ Neural Dynamics Lab</span></h3><p class="exp-dates">2020 - Present</p><ul class="exp-duties"><li>Lead development of next-generation neural interface systems for robotic control.</li><li>Designed and implemented brain-computer interface protocols that achieved 95% accuracy in intention recognition.</li><li>Managed a team of 6 engineers and researchers, overseeing projects with budgets exceeding $2M.</li></ul></div>
+            <div class="experience-item"><h3><span class="exp-title">Systems Engineer</span> <span class="exp-company">@ Booz Allen</span></h3><p class="exp-dates">2023 - Present</p><ul class="exp-duties"><li>Virtual Space Ground System (VSGS): Built a self-hosted AI assistant for on-prem LLM inference using a RAG pipeline over satellite mission data, with memory and reusable architecture later adopted by client teams; deployed microservices, API integration, and data flow optimization improving platform modularity and interoperability.</li><li>Partnered with a drone startup to integrate ATAK and TAK Server into their FPV UAS platform, enabling real-time telemetry and video to enhance warfighter situational awareness and operational effectiveness.</li><li>Shaped Army robotics program proposal by co-authoring whitepaper and translating customer requirements into system design and technical solution; informed market research and guided proposal response.</li></ul></div>
             <div class="experience-item"><h3><span class="exp-title">Research Scientist</span> <span class="exp-company">@ Advanced Robotics Institute</span></h3><p class="exp-dates">2018 - 2020</p><ul class="exp-duties"><li>Conducted groundbreaking research in human-robot interaction and autonomous navigation systems.</li><li>Published 12 peer-reviewed papers and secured $1.5M in research funding.</li><li>Developed novel algorithms for real-time sensor fusion and decision-making in complex environments.</li></ul></div>
             <div class="experience-item"><h3><span class="exp-title">Robotics Engineer</span> <span class="exp-company">@ TechnoBot Solutions</span></h3><p class="exp-dates">2016 - 2018</p><ul class="exp-duties"><li>Designed and programmed autonomous mobile robots for industrial applications.</li><li>Implemented machine learning algorithms for object recognition and path planning.</li></ul></div>
-        </section>
+        </section> -->
 
         <section id="projects">
             <h2 class="section-heading">Some Things I've Built</h2>
@@ -116,9 +197,9 @@
                     <div class="project-content">
                         <div>
                             <p class="project-overline">Featured Project</p>
-                            <h3 class="project-title">Touch-to-3D</h3>
+                            <h3 class="project-title">Touch 3D</h3>
                             <div class="project-description">
-                                <p> Touch-3D is a reinforcement learning project that uses a simulated DIGIT tactile sensor to reconstruct 3D object surfaces without relying on vision. By training a PPO-based agent in PyBullet/TACTO, the system learns efficient touch-based exploration and achieves up to 95% coverage on unseen objects, demonstrating the power of tactile sensing for robotic perception and manipulation..</p>
+                                <p> Developed a reinforcement learning pipeline that uses a simulated DIGIT tactile sensor to actively explore and reconstruct 3D object surfaces. The system learns efficient exploration policies with PPO, fuses tactile depth maps into point clouds, and generalizes from simple shapes to unseen YCB objects with up to 95% coverage.</p>
                             </div>
                             <ul class="project-tech-list">
                                 <li>Python</li>
