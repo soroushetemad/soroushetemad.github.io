@@ -20,7 +20,7 @@
     <canvas id="neuralCanvas"></canvas>
 
     <nav>
-        <a href="javascript:void(0)" onclick="scrollToSection('home')" class="logo">SE</a>
+        <a href="javascript:void(0)" onclick="scrollToSection('home')" class="logo"></a>
         <button class="hamburger" id="hamburger-button">
             <span></span>
             <span></span>
@@ -108,6 +108,70 @@
             <div class="experience-item"><h3><span class="exp-title">Robotics Engineer</span> <span class="exp-company">@ TechnoBot Solutions</span></h3><p class="exp-dates">2016 - 2018</p><ul class="exp-duties"><li>Designed and programmed autonomous mobile robots for industrial applications.</li><li>Implemented machine learning algorithms for object recognition and path planning.</li></ul></div>
         </section>
 
+        <section id="projects">
+            <h2 class="section-heading">Some Things I've Built</h2>
+            
+            <ul class="project-list">
+                <li class="project-item">
+                    <div class="project-content">
+                        <div>
+                            <p class="project-overline">Featured Project</p>
+                            <h3 class="project-title">Touch-to-3D</h3>
+                            <div class="project-description">
+                                <p> Touch-3D is a reinforcement learning project that uses a simulated DIGIT tactile sensor to reconstruct 3D object surfaces without relying on vision. By training a PPO-based agent in PyBullet/TACTO, the system learns efficient touch-based exploration and achieves up to 95% coverage on unseen objects, demonstrating the power of tactile sensing for robotic perception and manipulation..</p>
+                            </div>
+                            <ul class="project-tech-list">
+                                <li>Python</li>
+                                <li>Pybullet</li>
+                                <li>StableBaseline3</li>
+                                <li>OpenAI Gym</li>
+                            </ul>
+                            <div class="project-links">
+                                <a href="https://github.com/soroushetemad/Touch3D.git" aria-label="GitHub Link" target="_blank" rel="noopener noreferrer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><title>GitHub</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                </a>
+                                <a href="https://drive.google.com/file/d/1xuZfrK8E2y9OMAfJyR_XCIeGWc7qu1Cu/view?usp=sharing" aria-label="Research Paper" target="_blank" rel="noopener noreferrer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><title>Research Paper</title><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                </a>
+                                    <a href="https://docs.google.com/presentation/d/1hikx7oYXZ1x8A5XVNJZ4YiRiFnn7B6opOKa5jvDznEE/edit?usp=sharing" aria-label="Presentation" target="_blank" rel="noopener noreferrer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-slides"><title>Presentation</title><rect x="3" y="4" width="18" height="12" rx="2" ry="2"/><path d="M8 20h8"/><path d="M12 16v4"/></svg>
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-image">
+                        <img src="images/touch3d1.gif" alt="Training policy in simulation">
+                    </div>
+                </li>
+
+                <li class="project-item">
+                    <div class="project-content">
+                        <div>
+                            <p class="project-overline">Featured Project</p>
+                            <h3 class="project-title">Autonomous Navigation AI</h3>
+                            <div class="project-description">
+                                <p>An indoor navigation stack for mobile robots utilizing reinforcement learning for path planning and multi-sensor fusion (LIDAR, IMU, Cameras) for robust localization.</p>
+                            </div>
+                            <ul class="project-tech-list">
+                                <li>C++</li>
+                                <li>ROS</li>
+                                <li>LIDAR</li>
+                                <li>PyTorch</li>
+                            </ul>
+                            <div class="project-links">
+                                <a href="#" aria-label="GitHub Link" target="_blank" rel="noopener noreferrer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><title>GitHub</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-image">
+                        <img src="https://i.imgur.com/sT4b6r1.gif" alt="Autonomous Navigation AI GIF">
+                    </div>
+                </li>
+
+            </ul>
+        </section>
         <section id="blog">
             <h2 class="section-heading">From My Blog</h2>
             <ul class="blog-list">
@@ -144,68 +208,6 @@
             </ul>
         </section>
 
-        <section id="projects">
-            <h2 class="section-heading">Some Things I've Built</h2>
-            
-            <ul class="project-list">
-                <li class="project-item">
-                    <div class="project-content">
-                        <div>
-                            <p class="project-overline">Featured Project</p>
-                            <h3 class="project-title"><a href="#">Touch-to-3D </a></h3>
-                            <div class="project-description">
-                                <p> Touch-3D is a reinforcement learning project that uses a simulated DIGIT tactile sensor to reconstruct 3D object surfaces without relying on vision. By training a PPO-based agent in PyBullet/TACTO, the system learns efficient touch-based exploration and achieves up to 95% coverage on unseen objects, demonstrating the power of tactile sensing for robotic perception and manipulation..</p>
-                            </div>
-                            <ul class="project-tech-list">
-                                <li>Python</li>
-                                <li>Pybullet</li>
-                                <li>StableBaseline3</li>
-                                <li>OpenAI Gym</li>
-                            </ul>
-                            <div class="project-links">
-                                    <a href="https://github.com/soroushetemad/Touch3D.git" aria-label="GitHub Link" target="_blank" rel="noopener noreferrer">
-                                    <svg xmlns="http://www.w3.oSignal Processingrg/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><title>GitHub</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-image">
-                        <a href="#">
-                            <img src="images/touch3d1.gif" alt="Training policy in simulation">
-                        </a>
-                    </div>
-                </li>
-
-                <li class="project-item">
-                    <div class="project-content">
-                        <div>
-                            <p class="project-overline">Featured Project</p>
-                            <h3 class="project-title"><a href="#">Autonomous Navigation AI</a></h3>
-                            <div class="project-description">
-                                <p>An indoor navigation stack for mobile robots utilizing reinforcement learning for path planning and multi-sensor fusion (LIDAR, IMU, Cameras) for robust localization.</p>
-                            </div>
-                            <ul class="project-tech-list">
-                                <li>C++</li>
-                                <li>ROS</li>
-                                <li>LIDAR</li>
-                                <li>PyTorch</li>
-                            </ul>
-                            <div class="project-links">
-                                <a href="#" aria-label="GitHub Link" target="_blank" rel="noopener noreferrer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><title>GitHub</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-image">
-                        <a href="#">
-                            <img src="https://i.imgur.com/sT4b6r1.gif" alt="Autonomous Navigation AI GIF">
-                        </a>
-                    </div>
-                </li>
-
-            </ul>
-        </section>
         
             <section id="contact">
                 <h2 class="section-heading">What's Next?</h2>
