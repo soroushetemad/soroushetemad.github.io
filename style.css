@@ -401,6 +401,18 @@ nav {
 .project-tech-list li { margin: 0 20px 5px 0; color: var(--text-secondary); }
 .project-item:nth-of-type(2n + 1) .project-tech-list li { margin: 0 0 5px 20px; }
 .project-links a { color: var(--text-secondary); padding: 10px; }
+
+/* Highlighted patent link style */
+.highlight-link {
+    color: var(--accent-primary);
+    text-decoration: underline;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+.highlight-link:hover {
+    color: var(--accent-secondary);
+    text-decoration: underline;
+}
 .project-links a:hover { color: var(--accent-primary); }
 .project-links svg { width: 22px; height: 22px; }
 .project-image { grid-column: 7 / -1; grid-row: 1 / -1; position: relative; z-index: -1; }
